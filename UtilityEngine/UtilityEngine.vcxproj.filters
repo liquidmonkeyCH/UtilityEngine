@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Core\com">
+      <UniqueIdentifier>{0e23fda9-9594-4703-aa02-bf06b505cfb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\db">
+      <UniqueIdentifier>{58e42365-b227-4104-a97e-4da0a29da247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\main">
+      <UniqueIdentifier>{51c6e80c-1ba9-4e28-a839-e91cf016aa6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\mem">
+      <UniqueIdentifier>{2ea29eb5-ac37-44a6-b9da-ff08ed9d816d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\msg">
+      <UniqueIdentifier>{95ff446e-14e0-4809-ab19-b6ff942f43c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\net">
+      <UniqueIdentifier>{8edd49c4-9728-4f2a-baaf-ed27f6d1826b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\task">
+      <UniqueIdentifier>{49a5db4e-816e-44a4-b8f5-19c6208b5554}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\com_hex_caster.hpp">
+      <Filter>Core\com</Filter>
+    </ClInclude>
+    <ClInclude Include="include\com_less.hpp">
+      <Filter>Core\com</Filter>
+    </ClInclude>
+    <ClInclude Include="include\com_md5.hpp">
+      <Filter>Core\com</Filter>
+    </ClInclude>
+    <ClInclude Include="include\com_numeric_digit.hpp">
+      <Filter>Core\com</Filter>
+    </ClInclude>
+    <ClInclude Include="include\com_random.hpp">
+      <Filter>Core\com</Filter>
+    </ClInclude>
+    <ClInclude Include="include\com_service.hpp">
+      <Filter>Core\com</Filter>
+    </ClInclude>
+    <ClInclude Include="include\com_service_manager.hpp">
+      <Filter>Core\com</Filter>
+    </ClInclude>
+    <ClInclude Include="include\com_singleton.hpp">
+      <Filter>Core\com</Filter>
+    </ClInclude>
+    <ClInclude Include="include\com_thread_pool.hpp">
+      <Filter>Core\com</Filter>
+    </ClInclude>
+    <ClInclude Include="include\com_typename.hpp">
+      <Filter>Core\com</Filter>
+    </ClInclude>
+    <ClInclude Include="include\db_mysqlpp.hpp">
+      <Filter>Core\db</Filter>
+    </ClInclude>
+    <ClInclude Include="include\application.hpp">
+      <Filter>Core\main</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mem_buffer.hpp">
+      <Filter>Core\mem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mem_data_factory.hpp">
+      <Filter>Core\mem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mem_message.hpp">
+      <Filter>Core\mem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mem_rotative_buffer.hpp">
+      <Filter>Core\mem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mem_stream.hpp">
+      <Filter>Core\mem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mem_stream_buffer.hpp">
+      <Filter>Core\mem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mem_stream_node.hpp">
+      <Filter>Core\mem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\msg_controler.hpp">
+      <Filter>Core\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="include\msg_defines.hpp">
+      <Filter>Core\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="include\msg_handler_manager_deque.hpp">
+      <Filter>Core\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="include\msg_handler_manager_map.hpp">
+      <Filter>Core\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="include\msg_message.hpp">
+      <Filter>Core\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="include\net_defines.hpp">
+      <Filter>Core\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\net_framework.hpp">
+      <Filter>Core\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\net_io_service.hpp">
+      <Filter>Core\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\net_io_service_epoll.hpp">
+      <Filter>Core\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\net_io_service_iocp.hpp">
+      <Filter>Core\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\net_requester.hpp">
+      <Filter>Core\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\net_responder.hpp">
+      <Filter>Core\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\net_session.hpp">
+      <Filter>Core\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\net_socket.hpp">
+      <Filter>Core\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\task_dispatcher.hpp">
+      <Filter>Core\task</Filter>
+    </ClInclude>
+    <ClInclude Include="include\task_dispatcher_balance.hpp">
+      <Filter>Core\task</Filter>
+    </ClInclude>
+    <ClInclude Include="include\task_dispatcher_pool.hpp">
+      <Filter>Core\task</Filter>
+    </ClInclude>
+    <ClInclude Include="include\task_object.hpp">
+      <Filter>Core\task</Filter>
+    </ClInclude>
+    <ClInclude Include="include\base_defines.hpp">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\logger.hpp">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\com_md5.cpp">
+      <Filter>Core\com</Filter>
+    </ClCompile>
+    <ClCompile Include="src\application.cpp">
+      <Filter>Core\main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mem_rotative_buffer.cpp">
+      <Filter>Core\mem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mem_stream_buffer.cpp">
+      <Filter>Core\mem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net_framework.cpp">
+      <Filter>Core\net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net_io_service.cpp">
+      <Filter>Core\net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net_io_service_epoll.cpp">
+      <Filter>Core\net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net_io_service_iocp.cpp">
+      <Filter>Core\net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net_session.cpp">
+      <Filter>Core\net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net_socket.cpp">
+      <Filter>Core\net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\task_dispatcher_balance.cpp">
+      <Filter>Core\task</Filter>
+    </ClCompile>
+    <ClCompile Include="src\task_dispatcher_pool.cpp">
+      <Filter>Core\task</Filter>
+    </ClCompile>
+    <ClCompile Include="src\task_object.cpp">
+      <Filter>Core\task</Filter>
+    </ClCompile>
+    <ClCompile Include="src\logger.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\mem_data_factory.inl">
+      <Filter>Core\mem</Filter>
+    </None>
+    <None Include="include\net_requester.inl">
+      <Filter>Core\net</Filter>
+    </None>
+    <None Include="include\net_responder.inl">
+      <Filter>Core\net</Filter>
+    </None>
+    <None Include="include\net_session.inl">
+      <Filter>Core\net</Filter>
+    </None>
+  </ItemGroup>
+</Project>

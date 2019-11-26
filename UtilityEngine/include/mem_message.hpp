@@ -1,0 +1,40 @@
+/**
+* @file mem_message.hpp
+*
+* @author Hourui (liquidmonkey)
+*/
+#ifndef __MEM_MESSAGE_HPP__
+#define __MEM_MESSAGE_HPP__
+
+#include "base_defines.hpp"
+
+namespace Utility
+{
+////////////////////////////////////////////////////////////////////////////////////////////////////
+namespace mem
+{
+////////////////////////////////////////////////////////////////////////////////////////////////////
+class message
+{
+public:
+	message(void) :m_limit(0), m_pos(0) {}
+	virtual ~message(void) = default;
+  
+	virtual const char* next(net_size_t &size) = 0;
+	virtual void reset(void) { m_pos = 0; }
+
+	net_size_t get_read_limit(void) { return m_limit; }
+protected:
+	void set_read_limit(net_size_t limit) { m_limit = limit; }
+protected:
+	net_size_t m_limit;
+	net_size_t m_pos;
+};
+////////////////////////////////////////////////////////////////////////////////////////////////////
+template<class buffer_type, net_size_t MAX_MSG_LEN>
+struct message_assert{ static void check(void) {} };
+////////////////////////////////////////////////////////////////////////////////////////////////////
+}//namespace mem
+////////////////////////////////////////////////////////////////////////////////////////////////////
+}//namespace Utility 
+#endif //__MEM_BUFFER_HPP__

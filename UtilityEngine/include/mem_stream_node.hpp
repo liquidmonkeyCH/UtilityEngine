@@ -1,0 +1,40 @@
+/**
+* @file mem_stream_node.hpp
+*
+* @author Hourui (liquidmonkey)
+*/
+#ifndef __MEM_STREAM_NODE_HPP__
+#define __MEM_STREAM_NODE_HPP__
+
+#include "base_defines.hpp"
+
+namespace Utility
+{
+////////////////////////////////////////////////////////////////////////////////////////////////////
+namespace mem
+{
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct stream_node
+{
+	stream_node(void) :m_next(nullptr) { m_buffer[MAX_PACKET_LEN]=0; }
+	~stream_node(void) = default;
+
+	char m_buffer[MAX_PACKET_LEN+1];
+	stream_node* m_next;
+};
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct _stream_node
+{
+	_stream_node(void) :m_next(nullptr), m_buffer(nullptr), m_size(0){}
+	_stream_node(const char* p, std::size_t size, stream_node* next = nullptr) :m_next(next), m_buffer(p), m_size(size) {}
+	~_stream_node(void) = default;
+
+	const char* m_buffer;
+	std::size_t m_size;
+	stream_node* m_next;
+};
+////////////////////////////////////////////////////////////////////////////////////////////////////
+}//namespace mem
+////////////////////////////////////////////////////////////////////////////////////////////////////
+}//namespace Utility 
+#endif //__MEM_BUFFER_HPP__

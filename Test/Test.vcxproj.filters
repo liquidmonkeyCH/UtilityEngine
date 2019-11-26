@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DataFactory_Test.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mysql_Test.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Other_Test.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Service_Test.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Singleton_Test.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadPool_Test.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilityTest.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UtilityTest.hpp">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

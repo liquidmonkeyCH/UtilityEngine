@@ -1,0 +1,12 @@
+{
+	"debug": {
+		"cxx_flags": "-ggdb"
+	},
+	"release": {
+	},
+	"common": {
+		"defines": "",
+		"include_path": "../UtilityEngine/include",
+		"cxx_flags": "-g -std=c++17 -o2 -Wall"
+	}
+}

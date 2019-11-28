@@ -1,0 +1,13 @@
+{
+	"debug": {
+	},
+	"release": {
+	},
+	"common": {
+		"defines": "",
+		"include_path": "",
+		"link_path": "",
+		"link_libs": "",
+		"cxx_flags": ""
+	}
+}

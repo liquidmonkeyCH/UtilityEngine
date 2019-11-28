@@ -1,0 +1,10 @@
+{
+	"debug": {
+	},
+	"release": {
+	},
+	"common": {
+		"link_path": "../lib",
+		"link_libs": "UtilityEngine"
+	}
+}

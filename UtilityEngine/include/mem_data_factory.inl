@@ -307,9 +307,9 @@ data_factory<T, 0>::init(data_factory<T, 0>::size_type size)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class T, std::uint64_t N, size_t Cache>
 data_factory_ex<T, N, Cache>::data_factory_ex(void)
-	: m_size(N)
-	, m_alloc_chunk(0)
+	: m_alloc_chunk(0)
 	, m_dealloc_chunk(0)
+	, m_size(N)
 {
 	if (m_size)
 		m_chunks.push_back(allocator_wrap_t::get_allocator()->malloc(m_size));

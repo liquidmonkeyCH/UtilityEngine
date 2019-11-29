@@ -415,7 +415,6 @@ bool
 io_service_epoll::process_send(per_io_data* data,per_io_data* _data)
 {
 	session_iface* session = static_cast<session_iface*>(data->m_owner);
-	socket_iface* socket = session->get_socket();
 	int len = 0;
 	
 	if(_data)

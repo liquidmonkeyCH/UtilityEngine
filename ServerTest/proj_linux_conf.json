@@ -5,6 +5,6 @@
 	},
 	"common": {
 		"link_path": "../libs",
-		"link_libs": "UtilityEngine"
+		"link_libs": "UtilityEngine pthread"
 	}
 }

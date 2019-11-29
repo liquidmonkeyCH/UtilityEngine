@@ -39,7 +39,7 @@ public:
 public:
 	const std::string& get_host(void) const;
 	std::uint32_t get_port(void) const;
-	const fd_t get_fd(void) const;
+	fd_t get_fd(void) const;
 
 	//! only for server
 	void set_fd(fd_t fd, sockaddr_storage* addr);

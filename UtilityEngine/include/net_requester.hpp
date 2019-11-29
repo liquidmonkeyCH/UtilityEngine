@@ -59,8 +59,6 @@ protected:
 protected:
 	virtual void on_start(void){}
 	virtual void on_stop(void){}
-	virtual void on_disconnect(void){}
-	virtual bool on_connect_retry(const char* host, std::uint32_t port, std::uint32_t timeout_msecs){ return false; }
 protected:
 	session_t				m_session;
 	//! for session

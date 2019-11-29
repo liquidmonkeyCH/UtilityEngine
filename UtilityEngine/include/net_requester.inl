@@ -53,7 +53,7 @@ bool requester<session_t, handler_manager, dispatcher>::connect(const char* host
 			return true;
 		}
 	}
-	catch (utility_error e){
+	catch (utility_error& e){
 		Clog::error(e.what());
 		throw(e);
 	}
@@ -89,6 +89,7 @@ void requester<session_t, handler_manager, dispatcher>::post_request(session_ifa
 template<class session_t, class handler_manager, class dispatcher>
 void requester<session_t, handler_manager, dispatcher>::on_close_session(session_iface* session)
 {
+	(void)session;
 	m_can_stop.set_value(true);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

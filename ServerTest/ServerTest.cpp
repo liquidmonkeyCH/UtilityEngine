@@ -36,7 +36,7 @@ int handler(task::object_iface* obj, mem::message* msg, void* ptr)
 	++total_msg;
 	char buffer[MAX_PACKET_LEN + 1];
 	GameSession* session = dynamic_cast<GameSession*>(obj);
-	net_size_t limit = msg->get_read_limit();
+
 	net_size_t len = 0,size = 0;
 	while (true) {
 		const char* p = msg->next(len);
@@ -144,7 +144,7 @@ int main(int argc, char* argv[])
 	dispatcher.stop();
 
 	}
-	catch (utility_error e){
+	catch (utility_error& e){
 		Clog::error("%s:%d", e.what(), e.get_error());
 	}
 

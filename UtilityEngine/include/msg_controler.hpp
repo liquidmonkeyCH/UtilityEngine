@@ -48,7 +48,6 @@ public:
 	void post_request(task::object_iface* obj, std::uint32_t compkey, mem::message* message, void* ptr)
 	{
 		net_size_t len = 0;
-		const char* p = nullptr;
 		message_t* msg = dynamic_cast<message_t*>(message);
 
 		if (msg)

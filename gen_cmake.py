@@ -9,6 +9,7 @@ import re
 import json
 
 common = 'common'
+proj_source_dir = "${PROJECT_SOURCE_DIR}/"
 
 class cmake_tool(object):
     def __init__(self):
@@ -72,27 +73,32 @@ set(CMAKE_CXX_COMPILER "g++")
             contents = f.read()
             self.proj_conf = json.loads(contents)
 
+    def check_create_path(self,path,islinkpath):
+        if not islinkpath or path[0] != ".":
+            return path
+        return proj_source_dir + path
 
-    def get_conf_value(self,mode,key):
+
+    def get_conf_value(self,mode,key,islinkpath = False):
         contents = ""
         if self.common_conf[common].get(key) != None and self.common_conf[common][key] != "":
-            contents += self.common_conf[common][key]
+            contents += self.check_create_path(self.common_conf[common][key],islinkpath)
             
         if self.proj_conf[common].get(key) != None and self.proj_conf[common][key] != "":
             contents += " "
-            contents += self.proj_conf[common][key]
+            contents += self.check_create_path(self.proj_conf[common][key],islinkpath)
             
         if self.common_conf.get(mode) != None:
             if self.common_conf[mode].get(key) != None and self.common_conf[mode][key] != "":
                 contents += " "
-                contents += self.common_conf[mode][key]
+                contents += self.check_create_path(self.common_conf[mode][key],islinkpath)
         else:
             print("[warring] common_linux_conf.json compile mode(%s) not found!" % mode)
                   
         if self.proj_conf.get(mode) != None:
             if self.proj_conf[mode].get(key) != None and self.proj_conf[mode][key] != "":
                 contents += " "
-                contents += self.proj_conf[mode][key]
+                contents += self.check_create_path(self.proj_conf[mode][key],islinkpath)
         else:
             print("[warring] proj_linux_conf.json compile mode(%s) not found!" % mode)
                   
@@ -111,7 +117,7 @@ set(CMAKE_CXX_COMPILER "g++")
             return False
         self.definitions = self.get_conf_value(mode,'defines')
         self.include_directories = self.get_conf_value(mode,'include_path')
-        self.link_directories = self.get_conf_value(mode,'link_path')
+        self.link_directories = self.get_conf_value(mode,'link_path',True)
         self.link_libraries = self.get_conf_value(mode,'link_libs')
         self.cxx_flags = self.get_conf_value(mode,'cxx_flags')
         self.library = self.proj_conf.get('library')
@@ -144,6 +150,6 @@ set(CMAKE_CXX_COMPILER "g++")
 
 if __name__ == '__main__':
     tool = cmake_tool()
-    vcproj_file = "./"+sys.argv[1]+"/"+sys.argv[1]+".vcxproj"
     proj_path = "./"+sys.argv[1]+"/"
+    vcproj_file = proj_path+sys.argv[1]+".vcxproj"
     tool.loadxml(vcproj_file, proj_path)

@@ -33,6 +33,7 @@ public:
 
 int handler(task::object_iface* obj, mem::message* msg, void* ptr)
 {
+	(void)ptr;
 	unsigned long len = 0;
 	const char* p = msg->next(len);
 	GameSession* session = dynamic_cast<GameSession*>(obj);

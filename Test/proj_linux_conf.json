@@ -4,7 +4,7 @@
 	"release": {
 	},
 	"common": {
-		"link_path": "../lib",
+		"link_path": "../libs",
 		"link_libs": "UtilityEngine pthread mysqlpp"
 	}
 }

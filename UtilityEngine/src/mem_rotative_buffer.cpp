@@ -15,11 +15,11 @@ namespace mem
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 rotative_buffer::rotative_buffer(void)
 : m_buffer(nullptr)
-, m_writer(nullptr)
 , m_reader(nullptr)
+, m_writer(nullptr)
 , m_final(nullptr)
-, m_lastread(0)
 , m_lastcopy(0)
+, m_lastread(0)
 , m_size(0)
 #ifndef NDEBUG
 , m_last_malloc(0)

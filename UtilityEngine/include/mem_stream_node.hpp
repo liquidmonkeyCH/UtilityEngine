@@ -25,13 +25,13 @@ struct stream_node
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 struct _stream_node
 {
-	_stream_node(void) :m_next(nullptr), m_buffer(nullptr), m_size(0){}
-	_stream_node(const char* p, std::size_t size, stream_node* next = nullptr) :m_next(next), m_buffer(p), m_size(size) {}
+	_stream_node(void) :m_buffer(nullptr), m_next(nullptr), m_size(0){}
+	_stream_node(const char* p, std::size_t size, stream_node* next = nullptr) :m_buffer(p), m_next(next), m_size(size) {}
 	~_stream_node(void) = default;
 
 	const char* m_buffer;
-	std::size_t m_size;
 	stream_node* m_next;
+	std::size_t m_size;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace mem

@@ -1,9 +1,9 @@
 {
 	"debug": {
-		"link_path": "../debug/libs"
+		"link_path": "../bin_debug/libs"
 	},
 	"release": {
-		"link_path": "../release/libs"
+		"link_path": "../bin_release/libs"
 	},
 	"common": {
 		"include_path": "../mysql++/include ../mysql/include",

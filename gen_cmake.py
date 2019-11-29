@@ -47,20 +47,20 @@ set(CMAKE_CXX_COMPILER "g++")
             cmake_str += 'set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} %s")\n' % self.cxx_flags
    
         if not self.library or self.library == "":
-            cmake_str += 'set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../%s)\n' % self.compile_mode
+            cmake_str += 'set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../bin_%s)\n' % self.compile_mode
             cmake_str += 'add_executable(%s ${SOURCE_FILE})\n' % self.project
             cmake_str += 'target_link_libraries(%s  %s)\n' % (
                 self.project, self.link_libraries)
         else:
-            cmake_str += 'set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../%s/libs)\n' % self.compile_mode
+            cmake_str += 'set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../bin_%s/libs)\n' % self.compile_mode
             cmake_str += 'add_library(%s %s ${SOURCE_FILE})\n' % (
                 self.project, self.library)
 
-        output_path = proj_path + self.compile_mode
+        output_path = proj_path + "build_" + self.compile_mode
         if not os.path.exists(output_path):
             os.mkdir(output_path)
         
-        with open(output_path + '/CMakeLists.txt', 'w') as f:
+        with open(proj_path + '/CMakeLists.txt', 'w') as f:
             f.write(cmake_str)
             f.flush()
 

@@ -1,11 +1,12 @@
 {
 	"debug": {
+		"link_path": "../debug/libs"
 	},
 	"release": {
+		"link_path": "../release/libs"
 	},
 	"common": {
 		"include_path": "../mysql++/include ../mysql/include",
-		"link_path": "../libs",
 		"link_libs": "UtilityEngine pthread mysqlpp"
 	}
 }

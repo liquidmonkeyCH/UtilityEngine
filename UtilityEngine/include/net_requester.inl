@@ -29,6 +29,7 @@ requester_iface::state requester<session_t, handler_manager, dispatcher>::start(
 	if (connect(host, port, timeout_msecs))
 		return state::connected;
 	
+	framework::net_free();
 	m_state = static_cast<int>(state::none);
 	return state::timeout;
 }

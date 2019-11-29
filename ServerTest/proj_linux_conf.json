@@ -1,10 +1,11 @@
 {
 	"debug": {
+		"link_path": "../debug/libs"
 	},
 	"release": {
+		"link_path": "../release/libs"
 	},
 	"common": {
-		"link_path": "../libs",
 		"link_libs": "UtilityEngine pthread"
 	}
 }

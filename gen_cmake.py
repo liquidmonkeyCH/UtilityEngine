@@ -15,6 +15,7 @@ class cmake_tool(object):
     def __init__(self):
         self.compile_files = []
         self.project = ""
+        self.compile_mode = None
         self.root = None  # xml parse
         self.proj_conf = {}
         self.common_conf = {}
@@ -46,16 +47,20 @@ set(CMAKE_CXX_COMPILER "g++")
             cmake_str += 'set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} %s")\n' % self.cxx_flags
    
         if not self.library or self.library == "":
-            cmake_str += 'set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../bin)\n'
+            cmake_str += 'set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../%s)\n' % self.compile_mode
             cmake_str += 'add_executable(%s ${SOURCE_FILE})\n' % self.project
             cmake_str += 'target_link_libraries(%s  %s)\n' % (
                 self.project, self.link_libraries)
         else:
-            cmake_str += 'set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../libs)\n'
+            cmake_str += 'set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../%s/libs)\n' % self.compile_mode
             cmake_str += 'add_library(%s %s ${SOURCE_FILE})\n' % (
                 self.project, self.library)
 
-        with open(proj_path + 'CMakeLists.txt', 'w') as f:
+        output_path = proj_path + self.compile_mode
+        if not os.path.exists(output_path):
+            os.mkdir(output_path)
+        
+        with open(output_path + '/CMakeLists.txt', 'w') as f:
             f.write(cmake_str)
             f.flush()
 
@@ -104,8 +109,8 @@ set(CMAKE_CXX_COMPILER "g++")
                   
         return contents
 
-    def prase_conf(self,mode):
-        if mode == common:
+    def prase_conf(self,compile_mode):
+        if compile_mode == common:
             print("[error] compile mode can not be common!")
             return False
         if self.proj_conf.get(common) == None:
@@ -115,11 +120,11 @@ set(CMAKE_CXX_COMPILER "g++")
         if self.common_conf.get(common) == None:
             print("[error] load common_linux_conf.json error! key(common) not found!")
             return False
-        self.definitions = self.get_conf_value(mode,'defines')
-        self.include_directories = self.get_conf_value(mode,'include_path')
-        self.link_directories = self.get_conf_value(mode,'link_path',True)
-        self.link_libraries = self.get_conf_value(mode,'link_libs')
-        self.cxx_flags = self.get_conf_value(mode,'cxx_flags')
+        self.definitions = self.get_conf_value(compile_mode,'defines')
+        self.include_directories = self.get_conf_value(compile_mode,'include_path')
+        self.link_directories = self.get_conf_value(compile_mode,'link_path',True)
+        self.link_libraries = self.get_conf_value(compile_mode,'link_libs')
+        self.cxx_flags = self.get_conf_value(compile_mode,'cxx_flags')
         self.library = self.proj_conf.get('library')
         return True
 
@@ -128,6 +133,7 @@ set(CMAKE_CXX_COMPILER "g++")
             print("path not exist")
             return
         self.project = sys.argv[1]
+        self.compile_mode = sys.argv[2]
 
         contents = ""
         with codecs.open(xml_file, "r", "utf-8") as f:
@@ -142,7 +148,7 @@ set(CMAKE_CXX_COMPILER "g++")
 
         self.read_common_conf()
         self.read_proj_conf(proj_path)
-        if not self.prase_conf(sys.argv[2]):
+        if not self.prase_conf(self.compile_mode):
             return
         
         self.writecmakefile(proj_path)

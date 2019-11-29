@@ -38,7 +38,7 @@ void UtilityTest::_Mysql()
 			if(!res.empty())
 				Count = res[0][0];
 				
-				Clog::debug("%d", Count);
+			Clog::debug("%d", Count);
 			DATABASE_MYSQLPP_TRANSACTION_COMMIT()
 		DATABASE_MYSQLPP_TRANSACTION_END()
 	DATABASE_MYSQLPP_END()

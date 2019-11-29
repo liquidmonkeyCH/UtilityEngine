@@ -181,7 +181,7 @@ public:
 	data_factory(const data_factory&&) = delete;
 	data_factory& operator=(const data_factory&&) = delete;
 
-	void init(size_type size) { clear(); }
+	void init(size_type size) { (void)size; clear(); }
 	void clear(void);
 };
 

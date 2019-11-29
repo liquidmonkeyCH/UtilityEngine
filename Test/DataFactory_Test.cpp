@@ -17,11 +17,11 @@ void UtilityTest::_DataFactory()
 
 		int* a = _data_factory1.malloc();
 		int* b = _data_factory2.malloc();
-
-		//bool r1 = _data_factory1.free(b);
-		bool r2 = _data_factory1.free(a);
-		//bool r3 = _data_factory1.free(a);
-		bool r4 = _data_factory2.free(b);
+		bool ret = false;
+		//ret = _data_factory1.free(b);
+		ret = _data_factory1.free(a);
+		//ret = _data_factory1.free(a);
+		ret = _data_factory2.free(b);
 
 	}
 }

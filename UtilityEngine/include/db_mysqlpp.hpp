@@ -45,12 +45,12 @@ private:
 	public:
 		connection_pool(const char* dbname, const char* user, const char* password,
 			const char* server, unsigned int port, const char* charset, unsigned int idel)
-			: m_db(dbname ? dbname : "")
+			: m_charset(charset ? charset : "")
+			, m_db(dbname ? dbname : "")
 			, m_server(server ? server : "")
 			, m_user(user ? user : "")
 			, m_password(password ? password : "")
 			, m_port(port)
-			, m_charset(charset ? charset : "")
 			, m_idel(idel) {}
 
 		~connection_pool() { clear(); }

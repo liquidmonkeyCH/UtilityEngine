@@ -22,6 +22,7 @@ namespace iface
 class Service
 {
 public:
+	virtual ~Service(void) {}
 	using SERVICE_ID = const char*;
 public:
 	virtual SERVICE_ID GetId(void) = 0;

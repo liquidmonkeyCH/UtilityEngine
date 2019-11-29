@@ -24,8 +24,8 @@ namespace net
 session_iface::session_iface(void)
 : m_io_service(nullptr)
 , m_parent(nullptr)
-, m_socket(nullptr)
 , m_state({ static_cast<int>(state::none) })
+, m_socket(nullptr)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

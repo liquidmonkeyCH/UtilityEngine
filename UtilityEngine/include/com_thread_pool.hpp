@@ -137,7 +137,7 @@ public:
 	size_t work_size(void) { return m_working; }
 	size_t task_size(void) { return m_ntasks; }
 private:
-	task_t get_task(size_t i)
+	task_t get_task(void)
 	{
 		std::unique_lock<std::mutex> lock(mtx);
 		while (tasks.empty() && m_state != state::none)
@@ -156,13 +156,13 @@ private:
 		return task;
 	}
 
-	void _run(size_t i)
+	void _run(void)
 	{
 		++m_working;
 		while (true)
 		{
 			--m_working;
-			if (task_t task = get_task(i))
+			if (task_t task = get_task())
 				task();
 			else
 				break;
@@ -172,7 +172,7 @@ protected:
 	void _init(void)
 	{
 		for (size_t i = 0; i < m_size; ++i)
-			pool[i] = std::thread(&thread_pool_wrap::_run, this, i);
+			pool[i] = std::thread(&thread_pool_wrap::_run, this);
 
 		std::lock_guard<std::mutex> lock(mtx);
 		m_state = state::start;

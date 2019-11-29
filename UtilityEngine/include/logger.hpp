@@ -47,7 +47,7 @@ public:
 	utility_error(const utility_error&) = default;
 	utility_error& operator=(const utility_error&) = default;
 public:
-	const std::int64_t get_error(void) const { return m_error; }
+	std::int64_t get_error(void) const { return m_error; }
 private:
 	std::int64_t m_error;
 };

@@ -4,7 +4,6 @@
 	"release": {
 	},
 	"common": {
-		"include_path":"../mysql++/include ../mysql/include" 
 		"link_path": "../libs",
 		"link_libs": "UtilityEngine pthread"
 	}

@@ -343,7 +343,7 @@ io_service_epoll::process_event(epoll_event* m_events)
 						break;
 					}
 
-					b_empty = len < data->m_buffer.len;
+					b_empty = net_size_t(len) < data->m_buffer.len;
 					b_exp = process_recv(session,len);
 					if(b_empty || !b_exp) 
 						break;

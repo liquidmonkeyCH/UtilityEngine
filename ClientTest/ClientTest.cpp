@@ -60,7 +60,7 @@ public:
 	}
 };
 
-int main(int argc, char* argv[])
+int main(void)
 {
 	logger klogger(logger::log_level::debug);
 	Clog::active_logger(&klogger);

@@ -103,7 +103,7 @@ private:
 	size_t m_max_session;
 };
 
-int main(int argc, char* argv[])
+int main(void)
 {
 	logger klogger(logger::log_level::debug);
 	Clog::active_logger(&klogger);

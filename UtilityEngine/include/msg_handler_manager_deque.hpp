@@ -36,6 +36,7 @@ private:
 inline handler_t 
 handler_manager_deque::get_handle(mem::message* msg)
 {
+	(void)msg;
 	if (m_map.empty())
 		return nullptr;
 

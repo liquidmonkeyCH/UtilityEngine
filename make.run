@@ -1,0 +1,106 @@
+#!/bin/bash
+
+source make.conf
+WorkDir=$pwd
+
+gen_cmake(){
+    python3 gen_cmake.py $1 $2
+}
+
+print_line(){
+    echo ====================================================================================
+}
+
+try_lock(){
+    if [ -f make.lock ];then
+        echo make already running!
+        cat make.lock
+        exit 1
+    fi
+    date > make.lock
+    echo $* >> make.lock
+    return 1
+}
+
+unlock(){
+    rm make.lock
+}
+
+do_cmake(){
+    echo gen_cmake $1 $2
+    #gen_cmake $1 $2
+    cd ./$1/build_$2
+    cmake ..
+    cd -
+}
+
+do_make(){
+    echo $* compile begin!
+    cd ./$1/build_$2
+    make ${*:3}
+    cd -
+}
+
+check_param(){
+    local cmd_in=($*)
+    local mode=${cmd_in[0]}
+    local cmd=
+    local app=all
+    for var in ${cmd_in[@]:1};do
+        [[ ${var:0:2} = -s ]] && app=${var:2} && continue
+        cmd=(${cmd[@]} $var)
+    done
+
+    [[ ! $app ]] && while true;do
+            print_line
+            local num=${#Projects[@]}
+            for((i=1;i<=$num;++i));do
+                echo $i:${Projects[i-1]}
+            done
+            ((++num))
+            echo $num:all
+            echo 0:exit
+            echo -n select server:&& read res
+            [[ ! $res || $res == *[!0-9]* || $res -lt 0 || $res -gt $num ]] && continue
+            [[ $res -eq 0 ]] && echo make.sh abort! && print_line && exit 1
+            [[ $res -eq $num ]] && app=all || app=${Projects[$res-1]}
+            break
+    done
+    print_line
+    try_lock $app $mode ${cmd[@]}
+    if [[ $app == all ]];then
+        for var in ${Projects[@]};do
+            do_cmake $var $mode ${cmd[@]}
+        done
+    else
+        do_cmake $app $mode ${cmd[@]}
+    fi
+    unlock
+    if [[ $app == all ]];then
+        for var in ${Projects[@]};do
+            print_line
+            do_make $var $mode ${cmd[@]}
+        done
+    else
+        print_line
+        do_make $app $mode ${cmd[@]}
+    fi
+    print_line
+}
+
+hit=`eval echo "${Modes[@]}"|grep -c "$hit"`
+[[ $hit -eq 1 && "$1" != "" ]] && check_param $* && exit 1
+modes=
+for var in ${Modes[@]};do
+    modes="$modes|$var"
+done
+
+case "$1" in
+    'unlock')
+        unlock
+        ;;
+    *)
+        echo "Usage:$0 {${modes:1}} [-sProjectName] [make command]"
+        ;;
+esac
+

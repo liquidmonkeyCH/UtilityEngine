@@ -110,7 +110,7 @@ int main(void)
 	Clog::active_logger(&klogger);
 
 	net::io_service_iocp io_service;
-	io_service.start();
+	io_service.start(1);
 	GameServer::dispatcher_t dispatcher;
 	dispatcher.start(10);
 

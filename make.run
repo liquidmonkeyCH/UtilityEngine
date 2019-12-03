@@ -28,7 +28,7 @@ unlock(){
 
 do_cmake(){
     echo gen_cmake $1 $2
-    #gen_cmake $1 $2
+    gen_cmake $1 $2
     cd ./$1/build_$2
     cmake ..
     cd -

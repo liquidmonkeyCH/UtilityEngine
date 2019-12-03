@@ -88,7 +88,7 @@ check_param(){
     print_line
 }
 
-hit=`eval echo "${Modes[@]}"|grep -c "$hit"`
+hit=`eval echo "${Modes[@]}"|grep -c "$1"`
 [[ $hit -eq 1 && "$1" != "" ]] && check_param $* && exit 1
 modes=
 for var in ${Modes[@]};do

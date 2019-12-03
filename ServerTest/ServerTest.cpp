@@ -125,7 +125,7 @@ int main(void)
 
 		
 			Server.init(nCount, &io_service, &dispatcher);
-			Server.start( "127.0.0.1", 55552);
+			Server.start( "0.0.0.0", 55552);
 		
 	
 		std::string str;

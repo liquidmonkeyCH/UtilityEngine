@@ -74,8 +74,11 @@ int main(void)
 	NetClient::dispatcher_t dispatcher;
 	dispatcher.start(10);
 
+	std::string host;
+	std::cout << "Enter host ip:";
+	std::cin >> host;
+	std::cout << "Entet Client num:";
 	int nCount;
-	
 	std::cin >> nCount;
 
 	std::list<std::shared_ptr<NetClient>> m_list;
@@ -84,7 +87,7 @@ int main(void)
 	{
 		std::shared_ptr<NetClient> client(new NetClient);
 		client->init(&io_service, &dispatcher);
-		if (client->start("127.0.0.1", 55552,1000) == net::requester_iface::state::timeout)
+		if (client->start(host.c_str(), 55552) == net::requester_iface::state::timeout)
 		{
 			Clog::debug("connect timeout!");
 			continue;

@@ -110,9 +110,9 @@ int main(void)
 	Clog::active_logger(&klogger);
 
 	net::io_service_iocp io_service;
-	io_service.start(1);
+	io_service.start();
 	GameServer::dispatcher_t dispatcher;
-	dispatcher.start(10);
+	dispatcher.start(4);
 
 	mem::stream_buffer::factory_t::init_allocator(100);
 

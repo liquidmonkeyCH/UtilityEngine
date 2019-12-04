@@ -69,10 +69,10 @@ int main(void)
 	net::framework::net_init();
 
 	net::io_service_iocp io_service;
-	io_service.start(1);
+	io_service.start();
 
 	NetClient::dispatcher_t dispatcher;
-	dispatcher.start(10);
+	dispatcher.start(4);
 
 	std::string host;
 	std::cout << "Enter host ip:";

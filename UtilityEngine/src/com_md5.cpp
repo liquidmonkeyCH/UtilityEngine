@@ -82,7 +82,7 @@ void md5::update(const void* input, std::size_t length) {
 		memcpy(&_buffer[index], input, partLen);
 		transform(_buffer);
 		for (i = partLen; i + 63 < length; i += 64) {
-			transform((const unsigned char*)input + i);
+			transform(static_cast<const unsigned char*>(input) + i);
 		}
 		index = 0;
 	}

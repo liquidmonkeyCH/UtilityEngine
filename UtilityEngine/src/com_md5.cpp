@@ -90,7 +90,7 @@ void md5::update(const void* input, std::size_t length) {
 		i = 0;
 	}
 	/* Buffer remaining input */
-	memcpy(&_buffer[index], (const unsigned char*)input + i, length - i);
+	memcpy(&_buffer[index], static_cast<const unsigned char*>(input) + i, length - i);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Return the message-digest

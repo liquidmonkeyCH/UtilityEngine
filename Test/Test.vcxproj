@@ -20,8 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataFactory_Test.cpp" />
-    <ClCompile Include="MD5.cpp" />
-    <ClCompile Include="Mysql_Test.cpp" />
     <ClCompile Include="Other_Test.cpp" />
     <ClCompile Include="Service_Test.cpp" />
     <ClCompile Include="Singleton_Test.cpp" />
@@ -29,7 +27,6 @@
     <ClCompile Include="UtilityTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MD5.hpp" />
     <ClInclude Include="UtilityTest.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -111,7 +108,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration);../mysql++/lib/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>UtilityEngine.lib;mysqlpp_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>UtilityEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

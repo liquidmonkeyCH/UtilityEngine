@@ -67,16 +67,16 @@ operation, processing another message block, and updating the
 context.
 */
 void md5::update(const void* input, std::size_t length) {
-	unsigned long i, index, partLen;
+	std::uint32_t i, index, partLen;
 	_finished = false;
-	unsigned long _length = static_cast<unsigned long>(length) << 3;
+	std::uint32_t _length = static_cast<std::uint32_t>(length) << 3;
 	/* Compute number of uchar8s mod 64 */
-	index = static_cast<unsigned long>((_count[0] >> 3) & 0x3f);
+	index = static_cast<std::uint32_t>((_count[0] >> 3) & 0x3f);
 	/* update number of bits */
 	if ((_count[0] += _length) < _length) {
 		++_count[1];
 	}
-	_count[1] += (static_cast<unsigned long>(length) >> 29);
+	_count[1] += (static_cast<std::uint32_t>(length) >> 29);
 	partLen = 64 - index;
 	/* transform as many times as possible. */
 	if (length >= partLen) {
@@ -106,16 +106,16 @@ the message _digest and zeroizing the context.
 */
 void md5::final() {
 	unsigned char bits[8];
-	unsigned long oldState[4];
-	unsigned long oldCount[2];
-	unsigned long index, padLen;
+	std::uint32_t oldState[4];
+	std::uint32_t oldCount[2];
+	std::uint32_t index, padLen;
 	/* Save current state and count. */
 	memcpy(oldState, _state, 16);
 	memcpy(oldCount, _count, 8);
 	/* Save number of bits */
 	encode(_count, bits, 8);
 	/* Pad out to 56 mod 64. */
-	index = (unsigned long)((_count[0] >> 3) & 0x3f);
+	index = (std::uint32_t)((_count[0] >> 3) & 0x3f);
 	padLen = (index < 56) ? (56 - index) : (120 - index);
 	update(PADDING, padLen);
 	/* Append length (before padding) */
@@ -129,7 +129,7 @@ void md5::final() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 /* md5 basic transformation. Transforms _state based on block. */
 void md5::transform(const unsigned char block[64]) {
-	unsigned long a = _state[0], b = _state[1], c = _state[2], d = _state[3], x[16];
+	std::uint32_t a = _state[0], b = _state[1], c = _state[2], d = _state[3], x[16];
 	decode(block, x, 64);
 	/* Round 1 */
 	TRANSFORM(F, a, b, c, d, x[0], S11, 0xd76aa478); /* 1 */
@@ -209,7 +209,7 @@ void md5::transform(const unsigned char block[64]) {
 /* Encodes input (ulong) into output (uchar8). Assumes length is
 a multiple of 4.
 */
-void md5::encode(const unsigned long* input, unsigned char* output, std::size_t length) {
+void md5::encode(const std::uint32_t* input, unsigned char* output, std::size_t length) {
 	for (std::size_t i = 0, j = 0; j < length; ++i, j += 4) {
 		output[j] = static_cast<unsigned char>(input[i] & 0xff);
 		output[j + 1] = static_cast<unsigned char>((input[i] >> 8) & 0xff);
@@ -221,10 +221,10 @@ void md5::encode(const unsigned long* input, unsigned char* output, std::size_t 
 /* Decodes input (uchar8) into output (ulong). Assumes length is
 a multiple of 4.
 */
-void md5::decode(const unsigned char* input, unsigned long* output, std::size_t length) {
+void md5::decode(const unsigned char* input, std::uint32_t* output, std::size_t length) {
 	for (std::size_t i = 0, j = 0; j < length; ++i, j += 4) {
-		output[i] = static_cast<unsigned long>(input[j]) | (static_cast<unsigned long>(input[j + 1]) << 8) |
-			(static_cast<unsigned long>(input[j + 2]) << 16) | (static_cast<unsigned long>(input[j + 3]) << 24);
+		output[i] = static_cast<std::uint32_t>(input[j]) | (static_cast<std::uint32_t>(input[j + 1]) << 8) |
+			(static_cast<std::uint32_t>(input[j + 2]) << 16) | (static_cast<std::uint32_t>(input[j + 3]) << 24);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////

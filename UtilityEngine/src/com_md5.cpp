@@ -203,7 +203,6 @@ void md5::transform(const unsigned char block[64]) {
 	_state[1] += b;
 	_state[2] += c;
 	_state[3] += d;
-	Clog::debug("md5 states:%lld %lld %lld %lld", _state[0], _state[1], _state[2], _state[3]);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 /* Encodes input (ulong) into output (uchar8). Assumes length is

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataFactory_Test.cpp" />
+    <ClCompile Include="Mysql_Test.cpp" />
     <ClCompile Include="Other_Test.cpp" />
     <ClCompile Include="Service_Test.cpp" />
     <ClCompile Include="Singleton_Test.cpp" />

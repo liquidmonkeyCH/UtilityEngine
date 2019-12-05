@@ -209,10 +209,10 @@ a multiple of 4.
 */
 void md5::encode(const unsigned long* input, unsigned char* output, std::size_t length) {
 	for (std::size_t i = 0, j = 0; j < length; ++i, j += 4) {
-		output[j] = unsigned char(input[i] & 0xff);
-		output[j + 1] = unsigned char((input[i] >> 8) & 0xff);
-		output[j + 2] = unsigned char((input[i] >> 16) & 0xff);
-		output[j + 3] = unsigned char((input[i] >> 24) & 0xff);
+		output[j] = static_cast<unsigned char>(input[i] & 0xff);
+		output[j + 1] = static_cast<unsigned char>((input[i] >> 8) & 0xff);
+		output[j + 2] = static_cast<unsigned char>((input[i] >> 16) & 0xff);
+		output[j + 3] = static_cast<unsigned char>((input[i] >> 24) & 0xff);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -221,8 +221,8 @@ a multiple of 4.
 */
 void md5::decode(const unsigned char* input, unsigned long* output, std::size_t length) {
 	for (std::size_t i = 0, j = 0; j < length; ++i, j += 4) {
-		output[i] = ((unsigned long)input[j]) | (((unsigned long)input[j + 1]) << 8) |
-			(((unsigned long)input[j + 2]) << 16) | (((unsigned long)input[j + 3]) << 24);
+		output[i] = static_cast<unsigned long>(input[j]) | (static_cast<unsigned long>(input[j + 1]) << 8) |
+			(static_cast<unsigned long>(input[j + 2]) << 16) | (static_cast<unsigned long>(input[j + 3]) << 24);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////

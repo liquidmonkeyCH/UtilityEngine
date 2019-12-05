@@ -68,13 +68,14 @@ context.
 void md5::update(const void* input, std::size_t length) {
 	unsigned long i, index, partLen;
 	_finished = false;
+	unsigned long _length = unsigned long(length) << 3;
 	/* Compute number of uchar8s mod 64 */
 	index = (unsigned long)((_count[0] >> 3) & 0x3f);
 	/* update number of bits */
-	if ((_count[0] += ((unsigned long)length << 3)) < ((unsigned long)length << 3)) {
+	if ((_count[0] += _length) < _length) {
 		++_count[1];
 	}
-	_count[1] += ((unsigned long)length >> 29);
+	_count[1] += (unsigned long(length) >> 29);
 	partLen = 64 - index;
 	/* transform as many times as possible. */
 	if (length >= partLen) {
@@ -208,10 +209,10 @@ a multiple of 4.
 */
 void md5::encode(const unsigned long* input, unsigned char* output, std::size_t length) {
 	for (std::size_t i = 0, j = 0; j < length; ++i, j += 4) {
-		output[j] = (unsigned char)(input[i] & 0xff);
-		output[j + 1] = (unsigned char)((input[i] >> 8) & 0xff);
-		output[j + 2] = (unsigned char)((input[i] >> 16) & 0xff);
-		output[j + 3] = (unsigned char)((input[i] >> 24) & 0xff);
+		output[j] = unsigned char(input[i] & 0xff);
+		output[j + 1] = unsigned char((input[i] >> 8) & 0xff);
+		output[j + 2] = unsigned char((input[i] >> 16) & 0xff);
+		output[j + 3] = unsigned char((input[i] >> 24) & 0xff);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////

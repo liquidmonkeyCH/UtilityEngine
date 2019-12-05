@@ -68,14 +68,14 @@ context.
 void md5::update(const void* input, std::size_t length) {
 	unsigned long i, index, partLen;
 	_finished = false;
-	unsigned long _length = unsigned long(length) << 3;
+	unsigned long _length = static_cast<unsigned long>(length) << 3;
 	/* Compute number of uchar8s mod 64 */
-	index = (unsigned long)((_count[0] >> 3) & 0x3f);
+	index = static_cast<unsigned long>((_count[0] >> 3) & 0x3f);
 	/* update number of bits */
 	if ((_count[0] += _length) < _length) {
 		++_count[1];
 	}
-	_count[1] += (unsigned long(length) >> 29);
+	_count[1] += (static_cast<unsigned long>(length) >> 29);
 	partLen = 64 - index;
 	/* transform as many times as possible. */
 	if (length >= partLen) {

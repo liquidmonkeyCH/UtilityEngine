@@ -1,6 +1,7 @@
 #include "UtilityTest.hpp"
 #include "com_hex_caster.hpp"
 #include "com_md5.hpp"
+#include "MD5.hpp"
 
 using namespace Utility;
 void UtilityTest::_Other()
@@ -35,16 +36,27 @@ void UtilityTest::_Other()
 		Clog::info("data(char[16]): 0,1,2,3,4,5,36,7,8,9,215,11,12,13,14,255, ");
 		unsigned char data[16] = { 0,1,2,3,4,5,36,7,8,9,215,11,12,13,14,255 };
 		com::md5 md5_data(data, 16);
+		MD5 md5_test(data,16);
+
 		Clog::debug("md5:%s",md5_data.c_str());
+		Clog::debug("md5:%s", md5_test.toString().c_str());
 
 		Clog::info("data1(char[8]): 0,1,2,3,4,5,36,7, ");
 		Clog::info("data2(char[8]): 8,9,215,11,12,13,14,255, ");
 		unsigned char data1[8] = { 0,1,2,3,4,5,36,7 };
 		unsigned char data2[8] = { 8,9,215,11,12,13,14,255 };
 		md5_data.reset();
+		md5_test.reset();
 		md5_data.update(data1, 8);
+		md5_test.update((void*)data1, 8);
+
 		Clog::debug("data1->md5:%s" , md5_data.c_str() );
+		Clog::debug("data1->md5:%s", md5_test.toString().c_str());
+
 		md5_data.update(data2, 8);
+		md5_test.update((void*)data2, 8);
+
 		Clog::debug("data1+data2->md5:%s", md5_data.c_str());
+		Clog::debug("data1+data2->md5:%s", md5_test.toString().c_str());
 	}
 }

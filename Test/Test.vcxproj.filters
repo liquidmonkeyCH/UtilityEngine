@@ -28,9 +28,15 @@
     <ClCompile Include="UtilityTest.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="MD5.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UtilityTest.hpp">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="MD5.hpp">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>

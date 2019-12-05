@@ -58,5 +58,9 @@ void UtilityTest::_Other()
 
 		Clog::debug("data1+data2->md5:%s", md5_data.c_str());
 		Clog::debug("data1+data2->md5:%s", md5_test.toString().c_str());
+
+		md5_data.reset();
+		md5_data.update("12345", 5);
+		Clog::debug("12345->md5:%s", md5_data.c_str());
 	}
 }

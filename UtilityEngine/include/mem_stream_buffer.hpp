@@ -51,19 +51,26 @@ public:
 	void commit_read(net_size_t size);
 
 	//! message iface
+	// Read a number of bytes.
+	const char* next(net_size_t& size) override;
+	// Skip a number of bytes.
+	bool skip(net_size_t size) override;
+	// Backs up a number of bytes.
+	bool back_up(net_size_t size) override;
+
+	// Reset total number of bytes read since this object was created to zero.
 	void reset(void) override;
-	const char* next(net_size_t& size);
+private:
+	const char* _next(net_size_t& size, net_size_t limit);
 public:
 	using factory_t = mem::data_factory_ex<stream_node, 0, mem::factory_cache_type::DYNAMIC>;
 private:
 	stream_node*	m_head;
 	stream_node*	m_tail;
-	stream_node*	m_next;
 	factory_t		m_factory;
 
 	char*	m_reader;
 	char*	m_writer;
-	char*	m_out;
 	std::size_t	m_readable;
 
 	std::size_t m_lastread;
@@ -72,6 +79,9 @@ private:
 #endif
 
 	std::mutex m_mutex;
+
+	stream_node* m_next;
+	net_size_t m_offset;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace mem

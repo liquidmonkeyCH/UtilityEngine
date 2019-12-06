@@ -15,15 +15,15 @@ namespace mem
 stream_buffer::stream_buffer(void)
 : m_head(nullptr)
 , m_tail(nullptr)
-, m_next(nullptr)
 , m_reader(nullptr)
 , m_writer(nullptr)
-, m_out(nullptr)
 , m_readable(0)
 , m_lastread(0)
 #ifndef NDEBUG
 , m_last_malloc(0)
 #endif
+, m_next(nullptr)
+, m_offset(0)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,19 +39,20 @@ stream_buffer::clear(void)
 	m_head = m_factory.malloc();
 	m_head->m_next = nullptr;
 	m_tail = m_head;
-	m_next = m_head;
-
+	
 	m_writer = m_head->m_buffer;
 	m_reader = m_head->m_buffer;
-	m_out = m_reader;
 
-	m_pos = 0;
-	m_limit = 0;
 	m_lastread = 0;
 	m_readable = 0;
 #ifndef NDEBUG
 	m_last_malloc = 0;
 #endif
+
+	m_limit = 0;
+	m_position = 0;
+	m_next = m_head;
+	m_offset = 0;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void
@@ -87,23 +88,25 @@ stream_buffer::read(net_size_t& size)
 void
 stream_buffer::commit_read(net_size_t size)
 {
-	assert(size <= m_readable);
 	std::lock_guard<std::mutex> lock(m_mutex);
+	assert(size <= m_readable);
 	m_readable -= size;
-	net_size_t len = static_cast<net_size_t>(m_head == m_tail ? m_writer - m_reader : m_head->m_buffer + MAX_PACKET_LEN - m_reader);
-	stream_node* tmp;
-	do
-	{
+	net_size_t len = m_head->m_buffer + MAX_PACKET_LEN - m_reader;
+	if (size < len) {		// 不需要跳转下一个node
 		m_reader += size;
-		if (m_reader < m_head->m_buffer + MAX_PACKET_LEN) break;
-		
-		size -= len;
+		return;
+	}
+
+	stream_node* tmp;
+	do {
 		tmp = m_head;
 		m_head = m_head->m_next;
-		m_reader = m_head->m_buffer;
 		m_factory.free(tmp);
-		len = static_cast<net_size_t>(m_head == m_tail ? m_writer - m_reader : MAX_PACKET_LEN);
-		
+		size -= len;
+		if (size < MAX_PACKET_LEN) {
+			m_reader = m_head->m_buffer + size;
+			break;
+		}
 	} while (true);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,46 +149,91 @@ stream_buffer::commit_write(net_size_t size)
 	return (m_lastread == 0);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+// **** message iface
+////////////////////////////////////////////////////////////////////////////////////////////////////
 void
 stream_buffer::reset(void)
 {
-	m_pos = 0;
+	m_position = 0;
+	m_offset = m_reader - m_head->m_buffer;
 	m_next = m_head;
-	m_out = m_reader;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+const char*
+stream_buffer::_next(net_size_t& size, net_size_t limit)
+{
+	net_size_t left = limit - m_position;
+
+	if (m_offset >= MAX_PACKET_LEN)
+	{
+		m_offset = 0;
+		m_next = m_next->m_next;
+	}
+
+	limit = static_cast<net_size_t>(MAX_PACKET_LEN) - m_offset;
+	if (left > limit) left = limit;
+	if (size == 0 || size > left) size = left;
+	left = m_offset;
+	m_position += size;
+	m_offset += size;
+
+	return m_next->m_buffer + left;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 const char*
 stream_buffer::next(net_size_t& size)
 {
 	net_size_t limit = m_limit > 0 ? m_limit : readable_size(0);
-	if (limit <= m_pos)			// 正常不会出现此状况,应在调用next之前已检查可读总数
-	{
+	assert(m_limit <= limit);
+	if (limit <= m_position) {
 		size = 0;
 		return nullptr;
 	}
 
-	net_size_t left = limit - m_pos;
-	if (size > left)			// 正常不会出现此状况,应在调用next之前已检查可读总数
-	{
+	return _next(size, limit);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+bool
+stream_buffer::skip(net_size_t size)
+{
+	net_size_t limit = m_limit > 0 ? m_limit : readable_size(0);
+	assert(m_limit <= limit);
+
+	if (size > limit - m_position)
+		return false;
+
+	net_size_t left = size;
+	do {
 		size = left;
-		return nullptr;
-	}
-	
-	const char* p = m_out;
+		_next(size,limit);
+		left -= size;
+	} while (left > 0);
 
-	limit = static_cast<net_size_t>(m_next->m_buffer + MAX_PACKET_LEN - m_out);
-	limit = limit > left ? left : limit;
-	size = (size == 0 || size > limit) ? limit : size;
+	return true;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+bool
+stream_buffer::back_up(net_size_t size)
+{
+	if (size > m_position)
+		return false;
 
-	m_pos += size;
-	m_out += size;
-	if (m_out - m_next->m_buffer == MAX_PACKET_LEN)
+	if (size <= m_offset)
 	{
-		m_next = m_next->m_next;
-		m_out = m_next->m_buffer;
+		m_position -= size;
+		m_offset -= size;
+		return true;
 	}
-	
-	return p;
+
+	// performs warring! 
+	net_size_t _skip = m_position - size;
+	reset();
+	if (_skip == 0) return true;
+	net_size_t limit = m_limit;
+	m_limit = 0;
+	skip(_skip);
+	m_limit = limit;
+	return true;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace mem

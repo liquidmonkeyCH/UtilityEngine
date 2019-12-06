@@ -49,7 +49,12 @@ public:
 	void commit_read(net_size_t size);
 
 	//! message iface
-	const char* next(net_size_t& size);
+	// Read a number of bytes.
+	const char* next(net_size_t& size) override;
+	// Skip a number of bytes.
+	bool skip(net_size_t size) override;
+	// Backs up a number of bytes.
+	bool back_up(net_size_t size) override;
 private:
 	char*	m_buffer;
 	char*	m_reader;

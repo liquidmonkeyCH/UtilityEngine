@@ -196,27 +196,57 @@ rotative_buffer::commit_write(net_size_t size)
 	return (m_lastread == 0); 
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+// **** message iface
+////////////////////////////////////////////////////////////////////////////////////////////////////
 const char*
 rotative_buffer::next(net_size_t& size)
 {
 	net_size_t limit = m_limit > 0 ? m_limit : readable_size(0);
-	if (limit <= m_pos)		// 正常不会出现此状况,应在调用next之前已检查可读总数
-	{
+	assert(m_limit <= limit);
+	if (limit <= m_position){
 		size = 0;
 		return nullptr;
 	}
 
-	net_size_t left = limit - m_pos;
-	if (size > left)		// 正常不会出现此状况,应在调用next之前已检查可读总数
-	{
+	net_size_t left = limit - m_position;
+	if (size > left) {					// 未达到预期期望读取数量
 		size = left;
 		return nullptr;
 	}
+	else if (size == 0)
+		size = left;
 
-	size = size == 0 ? left : size;
-	const char* p = read(limit) + m_pos;
-	m_pos += size;
-	return p;
+	left = m_position;
+	m_position += size;
+	return read(limit) + left;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+bool
+rotative_buffer::skip(net_size_t size)
+{
+	net_size_t limit = m_limit > 0 ? m_limit : readable_size(0);
+	assert(m_limit <= limit);
+
+	if (size > limit - m_position)
+		return false;
+
+	do {
+		limit = size;
+		next(limit);
+		size -= limit;
+	} while (size > 0);
+
+	return true;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+bool
+rotative_buffer::back_up(net_size_t size)
+{
+	if (size > m_position)
+		return false;
+
+	m_position -= size;
+	return true;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace mem

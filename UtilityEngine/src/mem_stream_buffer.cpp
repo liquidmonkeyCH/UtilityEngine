@@ -91,7 +91,7 @@ stream_buffer::commit_read(net_size_t size)
 	std::lock_guard<std::mutex> lock(m_mutex);
 	assert(size <= m_readable);
 	m_readable -= size;
-	net_size_t len = m_head->m_buffer + MAX_PACKET_LEN - m_reader;
+	net_size_t len = static_cast<net_size_t>(m_head->m_buffer + MAX_PACKET_LEN - m_reader);
 	if (size < len) {		// 不需要跳转下一个node
 		m_reader += size;
 		return;
@@ -155,7 +155,7 @@ void
 stream_buffer::reset(void)
 {
 	m_position = 0;
-	m_offset = m_reader - m_head->m_buffer;
+	m_offset = static_cast<net_size_t>(m_reader - m_head->m_buffer);
 	m_next = m_head;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -225,13 +225,13 @@ stream_buffer::back_up(net_size_t size)
 		return true;
 	}
 
-	// performs warring! 
-	net_size_t _skip = m_position - size;
+	// performs warning! 
+	size = m_position - size;
 	reset();
-	if (_skip == 0) return true;
+	if (size == 0) return true;
 	net_size_t limit = m_limit;
 	m_limit = 0;
-	skip(_skip);
+	skip(size);
 	m_limit = limit;
 	return true;
 }

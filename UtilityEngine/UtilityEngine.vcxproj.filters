@@ -145,6 +145,9 @@
     <ClInclude Include="include\logger.hpp">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="include\com_protobuf_stream.hpp">
+      <Filter>Core\com</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\com_md5.cpp">

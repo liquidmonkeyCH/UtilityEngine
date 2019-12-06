@@ -30,8 +30,8 @@ public:
 	// Reset total number of bytes read since this object was created to zero.
 	virtual void reset(void) { m_position = 0; }
 	// Returns the total number of bytes read since this object was created.
-	net_size_t get_read_bytes(void) { return m_position; }
-	net_size_t get_read_limit(void) { return m_limit; }
+	net_size_t get_read_bytes(void) const { return m_position; }
+	net_size_t get_read_limit(void) const { return m_limit; }
 protected:
 	void set_read_limit(net_size_t limit) { m_limit = limit; }
 protected:

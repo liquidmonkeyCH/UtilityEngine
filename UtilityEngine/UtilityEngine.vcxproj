@@ -131,6 +131,7 @@
     <ClInclude Include="include\com_less.hpp" />
     <ClInclude Include="include\com_md5.hpp" />
     <ClInclude Include="include\com_numeric_digit.hpp" />
+    <ClInclude Include="include\com_protobuf_stream.hpp" />
     <ClInclude Include="include\com_random.hpp" />
     <ClInclude Include="include\com_service.hpp" />
     <ClInclude Include="include\com_service_manager.hpp" />

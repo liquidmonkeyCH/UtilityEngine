@@ -16,10 +16,10 @@ namespace Utility
 namespace com
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class protocol_stream : public google::protobuf::io::ZeroCopyInputStream
+class protobuf_stream : public google::protobuf::io::ZeroCopyInputStream
 {
 public:
-	protocol_stream(mem::message* msg) :m_msg(msg), last_returned_size(0) {}
+	protobuf_stream(mem::message* msg) :m_msg(msg), last_returned_size(0) {}
 
 	bool Next(const void** data, int* size) override
 	{

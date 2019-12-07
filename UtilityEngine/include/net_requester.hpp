@@ -49,6 +49,7 @@ public:
 	void stop(void);
 	void join(void);
 
+	session_t* get_session(void) { return &m_session; }
 	void send(const char* msg, net_size_t len) { m_session.send(msg,len); }
 	bool is_connected(void){ return m_session.is_connected(); }
 protected:

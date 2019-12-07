@@ -145,7 +145,7 @@
     <ClInclude Include="include\logger.hpp">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="include\com_protobuf_stream.hpp">
+    <ClInclude Include="include\com_protobuf.hpp">
       <Filter>Core\com</Filter>
     </ClInclude>
   </ItemGroup>

@@ -82,9 +82,11 @@ protected:
 
 	bool process_recv(net_size_t size);
 	bool process_send(net_size_t size);
+protected:
+	bool send_check(net_size_t size);
+	void post_send(bool flag);
 public:
 	bool send(const char* packet, net_size_t size);
-	bool send(mem::message* message);
 protected:
 	socket_wrap<st> m_socket_impl;
 	message_t m_recv_buffer;

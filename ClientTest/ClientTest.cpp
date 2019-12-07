@@ -115,6 +115,7 @@ int main(void)
 				
 			str << ip << " client:" << n++;
 			(*it)->send(str.str().c_str(), str.str().length()+1);
+			
 			str.str("");
 			++it;
 		}

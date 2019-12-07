@@ -88,35 +88,28 @@ bool session_wrap<st, pares_message_wrap>::process_recv(net_size_t size)
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<socket_type st, class pares_message_wrap>
-bool session_wrap<st, pares_message_wrap>::send(const char* packet, net_size_t size)
+bool session_wrap<st, pares_message_wrap>::send_check(net_size_t size)
 {
 	if (m_state != static_cast<int>(state::connected))
 		return false;
 
-	std::lock_guard<std::mutex> lock(m_send_mutex);
+	m_send_mutex.lock();
 
-	net_size_t len = m_send_buffer.writable_size();
-
-	if (len < size)
+	if (m_send_buffer.writable_size() < size)
 	{
 		// buffer overflow 
 		close(reason::cs_send_buffer_overflow);
+		m_send_mutex.unlock();
 		return false;
 	}
 
-	char* p = nullptr;
-	net_size_t left = size;
-	bool b_send = false;
-	do {
-		len = left;
-		p = m_send_buffer.write(len);
-		memcpy(p, packet, len);
-		b_send = m_send_buffer.commit_write(len);
-		packet += len;
-		left -= len;
-	} while (left != 0);
-
-	if (b_send)
+	return true;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+template<socket_type st, class pares_message_wrap>
+void session_wrap<st, pares_message_wrap>::post_send(bool flag)
+{
+	if (flag)
 	{
 		m_send_data.m_buffer.len = MAX_PACKET_LEN;
 		m_send_data.m_buffer.buf = const_cast<char*>(m_send_buffer.read(m_send_data.m_buffer.len));
@@ -124,21 +117,28 @@ bool session_wrap<st, pares_message_wrap>::send(const char* packet, net_size_t s
 		if (m_state == static_cast<int>(state::connected))
 			m_io_service->post_send_event(&m_send_data);
 	}
-	return true;
+	m_send_mutex.unlock();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<socket_type st, class pares_message_wrap>
-bool session_wrap<st, pares_message_wrap>::send(mem::message* message)
+bool session_wrap<st, pares_message_wrap>::send(const char* packet, net_size_t size)
 {
-	net_size_t len = 0;
-	const char* p = nullptr;
-	do{
-		len = 0;
-		p = message->next(len);
-		if (!p) break;
-		if (!send(p, len)) return false;
-	} while (true);
+	if (!send_check(size)) 
+		return false;
 
+	char* p = nullptr;
+	net_size_t left = size;
+	bool b_send = false;
+	do {
+		size = left;
+		p = m_send_buffer.write(size);
+		memcpy(p, packet, size);
+		b_send = m_send_buffer.commit_write(size);
+		packet += size;
+		left -= size;
+	} while (left != 0);
+
+	post_send(b_send);
 	return true;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

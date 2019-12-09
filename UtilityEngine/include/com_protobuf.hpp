@@ -14,6 +14,56 @@
 namespace Utility
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+namespace _impl
+{
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class protobuf_ostream : public google::protobuf::io::ZeroCopyOutputStream
+{
+public:
+	protobuf_ostream(mem::message* msg)
+		:m_msg(dynamic_cast<mem::buffer_iface*>(msg)),
+		last_returned_size(0),
+		m_total_size(0),
+		m_need_send(false) {}
+
+	bool Next(void** data, int* size) override
+	{
+		net_size_t len = 0;
+		if (last_returned_size > 0) m_need_send = m_msg->commit_write(last_returned_size);
+		*data = m_msg->write(len);
+		if (*data == nullptr) return false;
+		last_returned_size = static_cast<int>(len);
+		*size = last_returned_size;
+		m_total_size += len;
+		return true;
+	}
+	void BackUp(int count) override
+	{
+		assert(last_returned_size > 0);
+		assert(count <= last_returned_size && count > 0);
+		m_total_size -= count;
+		m_need_send = m_msg->commit_write(last_returned_size - count);
+		last_returned_size = 0;
+	}
+
+	google::protobuf::int64 ByteCount() const override { return m_total_size; }
+	bool need_send(void) 
+	{ 
+		if (last_returned_size > 0) {
+			m_need_send = m_msg->commit_write(last_returned_size);
+			last_returned_size = 0;
+		}
+		return m_need_send; 
+	}
+private:
+	mem::buffer_iface* m_msg;
+	std::size_t m_total_size;
+	int last_returned_size;
+	bool m_need_send;
+};
+///////////////////////////////////////////////////////////////////////////////////////////////////
+}// namespace _impl
+///////////////////////////////////////////////////////////////////////////////////////////////////
 namespace com
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,46 +95,8 @@ private:
 	int last_returned_size;
 };
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class protobuf_ostream : public google::protobuf::io::ZeroCopyOutputStream
-{
-public:
-	protobuf_ostream(mem::message* msg) 
-		:m_msg(dynamic_cast<mem::buffer_iface*>(msg)), 
-		last_returned_size(0), 
-		m_total_size(0),
-		m_need_send(false){}
-
-	bool Next(void** data, int* size) override
-	{
-		net_size_t len = 0;
-		if (last_returned_size > 0) m_need_send = m_msg->commit_write(last_returned_size);
-		*data = m_msg->write(len);
-		if (*data == nullptr) return false;
-		last_returned_size = static_cast<int>(len);
-		*size = last_returned_size;
-		m_total_size += len;
-		return true;
-	}
-	void BackUp(int count) override
-	{
-		assert(last_returned_size > 0);
-		assert(count <= last_returned_size && count > 0);
-		m_total_size -= count;
-		m_need_send = m_msg->commit_write(last_returned_size - count);
-		last_returned_size = 0;
-	}
-
-	google::protobuf::int64 ByteCount() const override { return m_total_size; }
-	bool need_send(void) { return m_need_send; }
-private:
-	mem::buffer_iface* m_msg;
-	std::size_t m_total_size;
-	int last_returned_size;
-	bool m_need_send;
-};
-///////////////////////////////////////////////////////////////////////////////////////////////////
 template<net::socket_type st, class pares_message_wrap>
-class google_session : public net::session_wrap<st, pares_message_wrap>
+class protobuf_session : public net::session_wrap<st, pares_message_wrap>
 {
 public:
 	template<class T>
@@ -94,7 +106,7 @@ public:
 		if (!send_check(data.ByteSizeLong()))
 			return false;
 
-		protobuf_ostream kStream(&m_send_buffer);
+		_impl::protobuf_ostream kStream(&m_send_buffer);
 		data.SerializePartialToZeroCopyStream(&kStream);
 
 		post_send(kStream.need_send());

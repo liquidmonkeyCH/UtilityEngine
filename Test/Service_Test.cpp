@@ -44,7 +44,7 @@ void UtilityTest::_Service()
 		ServiceManager::Detach<ServiceTest>(&ServiceTest::destory);
 
 		pServiceTest = ServiceManager::GetService<ServiceTest>();
-
+		(void)pServiceTest;
 		int i = ServiceManager::Attach<ServiceTest>(&ServiceTest::init2, 10);
 		Clog::debug("Attach ServiceTest::init2 return %d", i);
 		bool res = ServiceManager::Detach<ServiceTest>(&ServiceTest::init3);
@@ -55,7 +55,7 @@ void UtilityTest::_Service()
 		ServiceManager::Detach<Test>(&Test::destory);
 
 		pService = ServiceManager::GetService<Test>();
-
+		(void)pService;
 		i = ServiceManager::Attach<Test>(&Test::init2, 10);
 		Clog::debug("Attach Service<Test>::init2 return %d", i);
 		res = ServiceManager::Detach<Test>(&Test::init3);

@@ -6,7 +6,7 @@
 		"link_path": "../bin_release/libs"
 	},
 	"common": {
-		"include_path": "",
+		"include_path": "/usr/include/mysql++/include /usr/include/mysql/include /usr/include/",
 		"link_libs": "UtilityEngine pthread mysqlpp"
 	}
 }

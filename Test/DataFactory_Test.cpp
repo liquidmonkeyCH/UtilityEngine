@@ -22,6 +22,6 @@ void UtilityTest::_DataFactory()
 		ret = _data_factory1.free(a);
 		//ret = _data_factory1.free(a);
 		ret = _data_factory2.free(b);
-
+		(void)ret;
 	}
 }

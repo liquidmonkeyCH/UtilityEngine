@@ -22,8 +22,8 @@ class protobuf_ostream : public google::protobuf::io::ZeroCopyOutputStream
 public:
 	protobuf_ostream(mem::message* msg)
 		:m_msg(dynamic_cast<mem::buffer_iface*>(msg)),
-		last_returned_size(0),
 		m_total_size(0),
+		last_returned_size(0),
 		m_need_send(false) {}
 
 	bool Next(void** data, int* size) override
@@ -103,13 +103,13 @@ public:
 	bool send(const T& data)
 	{
 		static_assert(std::is_base_of<google::protobuf::Message, T>::value,"data mast be google::protobuf::Message");
-		if (!send_check(data.ByteSizeLong()))
+		if (!this->send_check(data.ByteSizeLong()))
 			return false;
 
 		_impl::protobuf_ostream kStream(&this->m_send_buffer);
 		data.SerializePartialToZeroCopyStream(&kStream);
 
-		post_send(kStream.need_send());
+		this->post_send(kStream.need_send());
 		return true;
 	}
 };

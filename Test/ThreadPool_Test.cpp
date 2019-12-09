@@ -24,7 +24,7 @@ void thread_listen(com::threadpool* pool, int n)
 	{
 		Clog::info("working:%d Tasks:%d", pool->work_size(), pool->task_size());
 		
-		if (pool->work_size() == n && pool->task_size() == 0)
+		if (pool->work_size() == size_t(n) && pool->task_size() == 0)
 			return;
 			
 

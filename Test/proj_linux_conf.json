@@ -7,6 +7,6 @@
 	},
 	"common": {
 		"include_path": "/usr/include/mysql++ /usr/include/mysql /usr/include/",
-		"link_libs": "UtilityEngine pthread mysqlpp"
+		"link_libs": "UtilityEngine pthread mysqlpp protobuf"
 	}
 }

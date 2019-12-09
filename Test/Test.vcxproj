@@ -22,12 +22,15 @@
     <ClCompile Include="DataFactory_Test.cpp" />
     <ClCompile Include="Mysql_Test.cpp" />
     <ClCompile Include="Other_Test.cpp" />
+    <ClCompile Include="Protobuf_Test.cpp" />
     <ClCompile Include="Service_Test.cpp" />
     <ClCompile Include="Singleton_Test.cpp" />
+    <ClCompile Include="test.pb.cc" />
     <ClCompile Include="ThreadPool_Test.cpp" />
     <ClCompile Include="UtilityTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="test.pb.h" />
     <ClInclude Include="UtilityTest.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

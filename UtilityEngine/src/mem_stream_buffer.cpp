@@ -120,7 +120,7 @@ char*
 stream_buffer::write(net_size_t& size)
 {
 	std::size_t left = m_tail->m_buffer + MAX_PACKET_LEN - m_writer;
-	size = size > left ? static_cast<net_size_t>(left) : size;
+	size = (size == 0 || size > left) ? static_cast<net_size_t>(left) : size;
 #ifndef NDEBUG
 	m_last_malloc = size;
 #endif

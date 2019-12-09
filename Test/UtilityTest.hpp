@@ -11,7 +11,7 @@ struct UtilityTest
 	static void _ThreadPool();
 	static void _Mysql();
 	static void _DataFactory();
-
+	static void _Protobuf();
 	static void _Other();
 };
 

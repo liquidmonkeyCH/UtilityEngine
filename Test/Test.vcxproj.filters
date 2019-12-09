@@ -5,6 +5,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{eec632c1-3c0b-46fa-a0af-f4bed734647d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataFactory_Test.cpp">
@@ -28,10 +31,19 @@
     <ClCompile Include="Mysql_Test.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Protobuf_Test.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="test.pb.cc">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UtilityTest.hpp">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="test.pb.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

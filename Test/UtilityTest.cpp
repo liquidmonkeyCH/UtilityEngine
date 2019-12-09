@@ -17,6 +17,7 @@ int main(void)
 	UtilityTest::_ThreadPool();
 	UtilityTest::_DataFactory();
 	//UtilityTest::_Mysql();
+	UtilityTest::_Protobuf();
 
 	UtilityTest::_Other();
 	std::cout << static_cast<unsigned short>((1437439665242112 & 0x0000ffff00000000ULL) >> 32) << std::endl;

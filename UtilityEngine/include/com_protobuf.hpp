@@ -106,7 +106,7 @@ public:
 		if (!send_check(data.ByteSizeLong()))
 			return false;
 
-		_impl::protobuf_ostream kStream(&m_send_buffer);
+		_impl::protobuf_ostream kStream(&this->m_send_buffer);
 		data.SerializePartialToZeroCopyStream(&kStream);
 
 		post_send(kStream.need_send());

@@ -117,6 +117,7 @@ class allocator<Factory, mem::factory_cache_type::DYNAMIC>
 {
 public:
 	using size_type = typename Factory::size_type;
+	allocator(void):m_size(10){}
 
 	void init(size_t size) { m_size = size; }
 	Factory* malloc(size_type size);

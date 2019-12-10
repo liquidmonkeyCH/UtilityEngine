@@ -112,6 +112,10 @@ public:
 		this->post_send(kStream.need_send());
 		return true;
 	}
+	inline bool send(const char* package, size_t size)
+	{
+		return net::session_wrap<st, pares_message_wrap>::send(package, size);
+	}
 };
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 }// namespace com 

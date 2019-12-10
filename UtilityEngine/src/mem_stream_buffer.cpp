@@ -97,16 +97,17 @@ stream_buffer::commit_read(net_size_t size)
 		return;
 	}
 
+	size -= len;
 	stream_node* tmp;
 	do {
 		tmp = m_head;
 		m_head = m_head->m_next;
 		m_factory.free(tmp);
-		size -= len;
 		if (size < MAX_PACKET_LEN) {
 			m_reader = m_head->m_buffer + size;
 			break;
 		}
+		size -= MAX_PACKET_LEN;
 	} while (true);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

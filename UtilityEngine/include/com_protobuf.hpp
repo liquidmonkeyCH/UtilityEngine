@@ -107,7 +107,7 @@ public:
 			return false;
 
 		_impl::protobuf_ostream kStream(&this->m_send_buffer);
-		data.SerializePartialToZeroCopyStream(&kStream);
+		data.SerializeToZeroCopyStream(&kStream);
 
 		this->post_send(kStream.need_send());
 		return true;

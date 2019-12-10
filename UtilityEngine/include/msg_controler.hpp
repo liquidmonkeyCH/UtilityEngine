@@ -66,8 +66,7 @@ public:
 private:
 	void handle_wrap(task::object_iface* obj, std::uint32_t compkey, mem::message* message, void* ptr)
 	{
-		message_t* msg = dynamic_cast<message_t*>(message);
-		if (!msg)
+		if (!message)
 		{
 			obj->do_close(ptr);
 			return;
@@ -76,6 +75,7 @@ private:
 		if (obj->compkey() != compkey)
 			return;
 
+		message_t* msg = dynamic_cast<message_t*>(message);
 		handler_t handle = this->get_handle(msg);
 		if (!handle || handle(obj, message, ptr) != 0)
 		{

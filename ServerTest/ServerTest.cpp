@@ -114,7 +114,7 @@ int main(void)
 	GameServer::dispatcher_t dispatcher;
 	dispatcher.start(4);
 
-	mem::stream_buffer::factory_t::init_allocator(100);
+	mem::stream_buffer::factory_t::set_cache(100);
 
 	int nCount;
 	std::cin >> nCount;

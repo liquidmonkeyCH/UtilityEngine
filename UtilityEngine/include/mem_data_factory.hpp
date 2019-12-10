@@ -119,7 +119,7 @@ public:
 	using size_type = typename Factory::size_type;
 	allocator(void):m_size(10){}
 
-	void init(size_t size) { m_size = size; }
+	void set_cache(size_t size) { m_size = size; }
 	Factory* malloc(size_type size);
 	void free(Factory* p);
 private:
@@ -152,7 +152,7 @@ protected:
 	using allocator_t = allocator<Factory, mem::factory_cache_type::DYNAMIC>;
 	static allocator_t* get_allocator(void) { static allocator_t _allocator; return &_allocator; }
 public:
-	static void init_allocator(size_t size) { get_allocator()->init(size); }
+	static void set_cache(size_t size) { get_allocator()->set_cache(size); }
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }// namespace factory

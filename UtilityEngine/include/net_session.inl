@@ -39,7 +39,8 @@ void session_wrap<st, pares_message_wrap>::clear(void)
 template<socket_type st, class pares_message_wrap>
 void session_wrap<st, pares_message_wrap>::do_close(void* ptr)
 {
-	on_close(*(reason*)(ptr));
+	
+	on_close((reason)(ptrdiff_t)ptr);
 	m_parent->on_close_session(this);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

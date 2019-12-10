@@ -54,7 +54,7 @@ session_iface::close(reason st)
 	m_state = static_cast<int>(state::none);
 
 	++m_compkey;
-	m_parent->post_request(this,nullptr,&st);
+	m_parent->post_request(this,nullptr,(void*)st);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void 

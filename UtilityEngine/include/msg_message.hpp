@@ -75,7 +75,7 @@ public:
 			const char* p;
 			do {
 				p = this->next(len);
-				memcpy(&this->m_size + pos, p, len);
+				memcpy((char*)(&this->m_size) + pos, p, len);
 				pos += len;
 				if (pos >= size) break;
 				len = size - pos;

@@ -58,7 +58,7 @@ handler_t handler_manager_map<key_t>::get_handle(mem::message* msg)
 	{
 		p = msg->next(len);
 		if (!p) return nullptr;
-		memcpy(&key + pos, p, len);
+		memcpy((char*)(&key) + pos, p, len);
 		pos += len;
 		if (pos >= size) break;
 		len = size - pos;

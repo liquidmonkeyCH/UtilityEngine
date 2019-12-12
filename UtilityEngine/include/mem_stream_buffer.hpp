@@ -17,7 +17,7 @@ namespace Utility
 namespace mem
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t PER_NODE_LEN>
+template<std::size_t PER_BLOCK_LEN>
 class stream_buffer : public mem::buffer_iface
 {
 public:
@@ -64,10 +64,9 @@ public:
 private:
 	const char* _next(net_size_t& size, net_size_t limit);
 public:
-	using stream_node_t = stream_node<PER_NODE_LEN>;
+	using stream_node_t = stream_node<PER_BLOCK_LEN>;
 	using factory_t = mem::data_factory_ex<stream_node_t, 0, mem::factory_cache_type::DYNAMIC>;
 	static constexpr std::size_t MAX_MSG_PACKET_LEN = ULONG_MAX;
-	static constexpr std::size_t MAX_LEN = PER_NODE_LEN;
 private:
 	stream_node_t*	m_head;
 	stream_node_t*	m_tail;

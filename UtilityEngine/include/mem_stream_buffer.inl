@@ -53,10 +53,10 @@ void stream_buffer<N>::clear(void)
 template<std::size_t N>
 void stream_buffer<N>::init(std::size_t size)
 {
-	assert(size >= MAX_LEN);
+	assert(size >= N);
 
-	size_t nchunk = size / MAX_LEN;
-	m_factory.init(size % MAX_LEN ? nchunk + 1 : nchunk);
+	size_t block_count = size / N;
+	m_factory.init(size % N ? block_count + 1 : block_count);
 	clear();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ net_size_t stream_buffer<N>::readable_size(net_size_t exp)
 template<std::size_t N>
 const char* stream_buffer<N>::read(net_size_t& size)
 {
-	std::size_t len = m_head->m_buffer + MAX_LEN - m_reader;
+	std::size_t len = m_head->m_buffer + N - m_reader;
 	std::lock_guard<std::mutex> lock(m_mutex);
 	len = len > m_readable ? m_readable : len;
 	size = size > len ? static_cast<net_size_t>(len) : size;
@@ -86,7 +86,7 @@ void stream_buffer<N>::commit_read(net_size_t size)
 	std::lock_guard<std::mutex> lock(m_mutex);
 	assert(size <= m_readable);
 	m_readable -= size;
-	net_size_t len = static_cast<net_size_t>(m_head->m_buffer + MAX_LEN - m_reader);
+	net_size_t len = static_cast<net_size_t>(m_head->m_buffer + N - m_reader);
 	if (size < len) {		// 不需要跳转下一个node
 		m_reader += size;
 		return;
@@ -98,11 +98,11 @@ void stream_buffer<N>::commit_read(net_size_t size)
 		tmp = m_head;
 		m_head = m_head->m_next;
 		m_factory.free(tmp);
-		if (size < MAX_LEN) {
+		if (size < N) {
 			m_reader = m_head->m_buffer + size;
 			break;
 		}
-		size -= MAX_LEN;
+		size -= N;
 	} while (true);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ net_size_t stream_buffer<N>::writable_size(void)
 template<std::size_t N>
 char* stream_buffer<N>::write(net_size_t& size)
 {
-	std::size_t left = m_tail->m_buffer + MAX_LEN - m_writer;
+	std::size_t left = m_tail->m_buffer + N - m_writer;
 	size = (size == 0 || size > left) ? static_cast<net_size_t>(left) : size;
 #ifndef NDEBUG
 	m_last_malloc = size;
@@ -135,7 +135,7 @@ bool stream_buffer<N>::commit_write(net_size_t size)
 	m_writer += size;
 	m_readable += size;
 
-	if (m_writer >= m_tail->m_buffer + MAX_LEN) {
+	if (m_writer >= m_tail->m_buffer + N) {
 		m_tail->m_next = m_factory.malloc();
 		m_tail = m_tail->m_next;
 		m_tail->m_next = nullptr;
@@ -160,13 +160,13 @@ const char* stream_buffer<N>::_next(net_size_t& size, net_size_t limit)
 {
 	net_size_t left = limit - m_position;
 
-	if (m_offset >= MAX_LEN)
+	if (m_offset >= N)
 	{
 		m_offset = 0;
 		m_next = m_next->m_next;
 	}
 
-	limit = static_cast<net_size_t>(MAX_LEN) - m_offset;
+	limit = static_cast<net_size_t>(N) - m_offset;
 	if (left > limit) left = limit;
 	if (size == 0 || size > left) size = left;
 	left = m_offset;

@@ -64,13 +64,13 @@ public:
 private:
 	const char* _next(net_size_t& size, net_size_t limit);
 public:
-	using stream_node = stream_node<PER_NODE_LEN>;
-	using factory_t = mem::data_factory_ex<stream_node, 0, mem::factory_cache_type::DYNAMIC>;
+	using stream_node_t = stream_node<PER_NODE_LEN>;
+	using factory_t = mem::data_factory_ex<stream_node_t, 0, mem::factory_cache_type::DYNAMIC>;
 	static constexpr std::size_t MAX_MSG_PACKET_LEN = ULONG_MAX;
 	static constexpr std::size_t MAX_LEN = PER_NODE_LEN;
 private:
-	stream_node*	m_head;
-	stream_node*	m_tail;
+	stream_node_t*	m_head;
+	stream_node_t*	m_tail;
 	factory_t		m_factory;
 
 	char*	m_reader;
@@ -84,7 +84,7 @@ private:
 
 	std::mutex m_mutex;
 
-	stream_node* m_next;
+	stream_node_t* m_next;
 	net_size_t m_offset;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////

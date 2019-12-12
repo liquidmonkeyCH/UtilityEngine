@@ -93,7 +93,7 @@ void stream_buffer<N>::commit_read(net_size_t size)
 	}
 
 	size -= len;
-	stream_node* tmp;
+	stream_node_t* tmp;
 	do {
 		tmp = m_head;
 		m_head = m_head->m_next;

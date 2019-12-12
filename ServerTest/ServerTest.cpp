@@ -112,7 +112,7 @@ int main(void)
 	net::io_service_iocp io_service;
 	io_service.start();
 	GameServer::dispatcher_t dispatcher;
-	dispatcher.start(4);
+	dispatcher.start(10);
 
 	int nCount;
 	std::cin >> nCount;

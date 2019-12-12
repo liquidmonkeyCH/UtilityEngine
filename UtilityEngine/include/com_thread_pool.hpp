@@ -29,20 +29,8 @@ public:
 	task_wrap(const func_t&& fun) :m_simple_call(std::move(fun)), m_valid(true){}
 	task_wrap(T&& _task) :T(std::move(_task)), m_valid(true){}
 
-	void operator()()
-	{
-		if (m_simple_call)
-		{
-			m_simple_call();
-			return;
-		}
-		T::run();
-	}
-
-	operator bool()
-	{
-		return m_valid;
-	}
+	void operator()(){ m_simple_call ? m_simple_call() : T::run(); }
+	operator bool(){ return m_valid; }
 private:
 	func_t m_simple_call;
 	bool   m_valid;

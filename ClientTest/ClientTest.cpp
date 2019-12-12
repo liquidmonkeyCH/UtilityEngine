@@ -55,8 +55,8 @@ class NetClient : public net::requester <GameSession, msg::handler_manager_deque
 public:
 	void on_start(void)
 	{
-		m_recv_buffer_size = 2 * MAX_PACKET_LEN;
-		m_send_buffer_size = 2 * MAX_PACKET_LEN;
+		m_recv_buffer_size = 2 * GameSession::MAX_MSG_PACKET_LEN;
+		m_send_buffer_size = 2 * GameSession::MAX_MSG_PACKET_LEN;
 		m_controler.attach(handler);
 	}
 };
@@ -72,7 +72,7 @@ int main(void)
 	io_service.start();
 
 	NetClient::dispatcher_t dispatcher;
-	dispatcher.start(4);
+	dispatcher.start(10);
 
 	std::string host;
 	std::cout << "Enter host ip:";

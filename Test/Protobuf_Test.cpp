@@ -19,8 +19,8 @@ void UtilityTest::_Protobuf()
 
 	Clog::info("kTestOut:%s",kTestOut.DebugString().c_str());
 
-	mem::stream_buffer<MAX_PACKET_LEN> kbuffer;
-	kbuffer.init(MAX_PACKET_LEN * 2);
+	mem::stream_buffer<2> kbuffer;
+	kbuffer.init(2 * 100);
 	// 不要直接使用_impl::protobuf_ostream，除非你知道要做什么
 	// 继承com::protobuf_session && send(proto)
 	// com::protobuf_session会调用_impl::protobuf_ostream去发送协议

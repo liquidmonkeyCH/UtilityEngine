@@ -21,7 +21,7 @@
 
 using namespace Utility;
 
-class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::message_wrap<mem::rotative_buffer, MAX_PACKET_LEN> >
+class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::message_wrap<mem::rotative_buffer<MAX_PACKET_LEN>, MAX_PACKET_LEN> >
 {
 public:
 	void on_connect(void)

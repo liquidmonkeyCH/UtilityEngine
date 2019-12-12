@@ -18,7 +18,7 @@
 #include "task_dispatcher_balance.hpp"
 
 using namespace Utility;
-class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::message_wrap<mem::rotative_buffer,MAX_PACKET_LEN>>
+class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::message_wrap<mem::rotative_buffer<MAX_PACKET_LEN>,MAX_PACKET_LEN>>
 {
 public:
 	void on_connect(void)
@@ -113,8 +113,6 @@ int main(void)
 	io_service.start();
 	GameServer::dispatcher_t dispatcher;
 	dispatcher.start(4);
-
-	mem::stream_buffer::factory_t::set_cache(100);
 
 	int nCount;
 	std::cin >> nCount;

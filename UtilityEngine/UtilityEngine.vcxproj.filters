@@ -156,12 +156,6 @@
     <ClCompile Include="src\application.cpp">
       <Filter>Core\main</Filter>
     </ClCompile>
-    <ClCompile Include="src\mem_rotative_buffer.cpp">
-      <Filter>Core\mem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mem_stream_buffer.cpp">
-      <Filter>Core\mem</Filter>
-    </ClCompile>
     <ClCompile Include="src\net_framework.cpp">
       <Filter>Core\net</Filter>
     </ClCompile>
@@ -205,6 +199,12 @@
     </None>
     <None Include="include\net_session.inl">
       <Filter>Core\net</Filter>
+    </None>
+    <None Include="include\mem_stream_buffer.inl">
+      <Filter>Core\mem</Filter>
+    </None>
+    <None Include="include\mem_rotative_buffer.inl">
+      <Filter>Core\mem</Filter>
     </None>
   </ItemGroup>
 </Project>

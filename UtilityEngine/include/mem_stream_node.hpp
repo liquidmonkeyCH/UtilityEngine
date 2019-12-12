@@ -14,27 +14,18 @@ namespace Utility
 namespace mem
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+template<std::size_t N>
 struct stream_node
 {
-	stream_node(void) :m_next(nullptr) { m_buffer[MAX_PACKET_LEN]=0; }
+	static constexpr std::size_t MAX_LEN = N;
+	stream_node(void) :m_next(nullptr) { m_buffer[N] = 0; }
 	~stream_node(void) = default;
 
-	char m_buffer[MAX_PACKET_LEN+1];
+	char m_buffer[N + 1];
 	stream_node* m_next;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct _stream_node
-{
-	_stream_node(void) :m_buffer(nullptr), m_next(nullptr), m_size(0){}
-	_stream_node(const char* p, std::size_t size, stream_node* next = nullptr) :m_buffer(p), m_next(next), m_size(size) {}
-	~_stream_node(void) = default;
-
-	const char* m_buffer;
-	stream_node* m_next;
-	std::size_t m_size;
-};
-////////////////////////////////////////////////////////////////////////////////////////////////////
-}//namespace mem
+}// namespace mem
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace Utility 
 #endif //__MEM_BUFFER_HPP__

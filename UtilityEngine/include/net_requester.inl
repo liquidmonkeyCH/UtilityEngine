@@ -12,8 +12,6 @@ void requester<session_t, handler_manager, dispatcher>::init(io_service_iface* i
 
 	m_io_service = io_service;
 	m_controler.init(_dispatcher);
-	m_recv_buffer_size = MAX_PACKET_LEN * 10;
-	m_send_buffer_size = MAX_PACKET_LEN * 10;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class session_t, class handler_manager, class dispatcher>

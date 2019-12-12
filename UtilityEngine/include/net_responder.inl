@@ -13,9 +13,6 @@ void responder<session_t, handler_manager, dispatcher>::init(size_t max_session,
 	m_session_pool.init(max_session);
 	m_accept_data.init(10);
 
-	m_recv_buffer_size = MAX_PACKET_LEN * 10;
-	m_send_buffer_size = MAX_PACKET_LEN * 10;
-
 	m_io_service = io_service;
 	m_controler.init(_dispatcher);
 }

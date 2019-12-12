@@ -22,7 +22,7 @@ void session_wrap<st, pares_message_wrap>::init_buffer(std::size_t recv_buffer_s
 	m_recv_buffer.init(recv_buffer_size);
 	m_send_buffer.init(send_buffer_size);
 
-	m_recv_data.m_buffer.len = MAX_PACKET_LEN;
+	m_recv_data.m_buffer.len = MAX_MSG_PACKET_LEN;
 	m_recv_data.m_buffer.buf = m_recv_buffer.write(m_recv_data.m_buffer.len);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ void session_wrap<st, pares_message_wrap>::clear(void)
 	m_recv_buffer.clear();
 	m_send_buffer.clear();
 
-	m_recv_data.m_buffer.len = MAX_PACKET_LEN;
+	m_recv_data.m_buffer.len = MAX_MSG_PACKET_LEN;
 	m_recv_data.m_buffer.buf = m_recv_buffer.write(m_recv_data.m_buffer.len);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ bool session_wrap<st, pares_message_wrap>::process_send(net_size_t size)
 		return false;
 
 	m_send_buffer.commit_read(size);
-	size = MAX_PACKET_LEN;
+	size = MAX_MSG_PACKET_LEN;
 	const char* p = m_send_buffer.read(size);
 
 	if (size == 0 || m_state != static_cast<int>(state::connected))
@@ -75,7 +75,7 @@ bool session_wrap<st, pares_message_wrap>::process_recv(net_size_t size)
 		m_parent->post_request(this, &m_recv_buffer, nullptr);
 	}
 
-	m_recv_data.m_buffer.len = MAX_PACKET_LEN;
+	m_recv_data.m_buffer.len = MAX_MSG_PACKET_LEN;
 	m_recv_data.m_buffer.buf = m_recv_buffer.write(m_recv_data.m_buffer.len);
 
 	if (m_recv_data.m_buffer.len == 0)
@@ -111,7 +111,7 @@ void session_wrap<st, pares_message_wrap>::post_send(bool flag)
 {
 	if (flag)
 	{
-		m_send_data.m_buffer.len = MAX_PACKET_LEN;
+		m_send_data.m_buffer.len = MAX_MSG_PACKET_LEN;
 		m_send_data.m_buffer.buf = const_cast<char*>(m_send_buffer.read(m_send_data.m_buffer.len));
 
 		if (m_state == static_cast<int>(state::connected))

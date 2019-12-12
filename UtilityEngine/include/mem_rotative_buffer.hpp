@@ -15,6 +15,7 @@ namespace Utility
 namespace mem
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+template<std::size_t MAX_MESSAGE_LEN>
 class rotative_buffer : public buffer_iface
 {
 public:
@@ -55,6 +56,8 @@ public:
 	bool skip(net_size_t size) override;
 	// Backs up a number of bytes.
 	bool back_up(net_size_t size) override;
+
+	static constexpr std::size_t MAX_MSG_PACKET_LEN = MAX_MESSAGE_LEN;
 private:
 	char*	m_buffer;
 	char*	m_reader;
@@ -71,11 +74,7 @@ private:
 	std::mutex m_mutex;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<unsigned long MAX_MSG_LEN>
-struct message_assert<rotative_buffer, MAX_MSG_LEN>
-{
-	static void check(void) { static_assert(MAX_MSG_LEN <= MAX_PACKET_LEN, "MAX_MSG_LEN out of bound!"); }
-};
+#include "mem_rotative_buffer.inl"
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace mem
 ////////////////////////////////////////////////////////////////////////////////////////////////////

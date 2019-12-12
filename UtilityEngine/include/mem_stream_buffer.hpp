@@ -17,7 +17,8 @@ namespace Utility
 namespace mem
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class stream_buffer : public buffer_iface
+template<std::size_t PER_NODE_LEN>
+class stream_buffer : public mem::buffer_iface
 {
 public:
 	stream_buffer(void);
@@ -63,7 +64,10 @@ public:
 private:
 	const char* _next(net_size_t& size, net_size_t limit);
 public:
+	using stream_node = stream_node<PER_NODE_LEN>;
 	using factory_t = mem::data_factory_ex<stream_node, 0, mem::factory_cache_type::DYNAMIC>;
+	static constexpr std::size_t MAX_MSG_PACKET_LEN = ULONG_MAX;
+	static constexpr std::size_t MAX_LEN = PER_NODE_LEN;
 private:
 	stream_node*	m_head;
 	stream_node*	m_tail;
@@ -83,6 +87,8 @@ private:
 	stream_node* m_next;
 	net_size_t m_offset;
 };
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#include "mem_stream_buffer.inl"
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace mem
 ////////////////////////////////////////////////////////////////////////////////////////////////////

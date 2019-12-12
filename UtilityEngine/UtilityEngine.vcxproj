@@ -170,8 +170,6 @@
     <ClCompile Include="src\application.cpp" />
     <ClCompile Include="src\com_md5.cpp" />
     <ClCompile Include="src\logger.cpp" />
-    <ClCompile Include="src\mem_rotative_buffer.cpp" />
-    <ClCompile Include="src\mem_stream_buffer.cpp" />
     <ClCompile Include="src\net_framework.cpp" />
     <ClCompile Include="src\net_io_service.cpp" />
     <ClCompile Include="src\net_io_service_epoll.cpp" />
@@ -184,6 +182,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="include\mem_data_factory.inl" />
+    <None Include="include\mem_rotative_buffer.inl" />
+    <None Include="include\mem_stream_buffer.inl" />
     <None Include="include\net_requester.inl" />
     <None Include="include\net_responder.inl" />
     <None Include="include\net_session.inl" />

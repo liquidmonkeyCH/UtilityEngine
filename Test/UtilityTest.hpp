@@ -13,6 +13,7 @@ struct UtilityTest
 	static void _DataFactory();
 	static void _Protobuf();
 	static void _Other();
+	static void _Redis();
 };
 
 #endif//__UTILITY_TEST_HPP__

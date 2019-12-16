@@ -13,6 +13,8 @@
 #include <cstddef>
 #define MAX_PACKET_LEN 4096
 
+#define REDIS_CHECK_INTERVAL 500 // redis 连接检查间隔500ms
+
 #ifdef _WIN32
 using net_size_t = unsigned long;
 #else

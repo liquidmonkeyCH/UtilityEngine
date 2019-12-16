@@ -9,7 +9,6 @@
 #ifdef _WIN32
 #include <Ws2tcpip.h>
 #include <Mstcpip.h>
-#pragma comment(lib,"ws2_32.lib") 
 #else
 #include <netinet/tcp.h> 
 #endif

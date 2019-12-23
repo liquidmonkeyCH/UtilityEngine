@@ -40,7 +40,7 @@ class connection_pool : public com::iface::Singleton<connection_pool<dsn>>
 public:
 	connection_pool() :m_port(0),m_bInit(false) {}
 	~connection_pool() { clear(); }
-	friend class redis;
+	friend class db::redis;
 	template<redis_dsn> friend struct auto_connect;
 protected:
 	void init(const char* server, unsigned int port, std::size_t size)

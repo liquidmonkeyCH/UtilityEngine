@@ -17,6 +17,7 @@ int main(void)
 	UtilityTest::_ThreadPool();
 	UtilityTest::_DataFactory();
 	//UtilityTest::_Mysql();
+	UtilityTest::_Redis();
 	UtilityTest::_Protobuf();
 
 	UtilityTest::_Other();

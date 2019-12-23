@@ -10,6 +10,7 @@ struct UtilityTest
 	static void _Singleton();
 	static void _ThreadPool();
 	static void _Mysql();
+	static void _Redis();
 	static void _DataFactory();
 	static void _Protobuf();
 	static void _Other();

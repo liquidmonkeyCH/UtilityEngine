@@ -23,6 +23,7 @@
     <ClCompile Include="Mysql_Test.cpp" />
     <ClCompile Include="Other_Test.cpp" />
     <ClCompile Include="Protobuf_Test.cpp" />
+    <ClCompile Include="Redis_Test.cpp" />
     <ClCompile Include="Service_Test.cpp" />
     <ClCompile Include="Singleton_Test.cpp" />
     <ClCompile Include="test.pb.cc" />

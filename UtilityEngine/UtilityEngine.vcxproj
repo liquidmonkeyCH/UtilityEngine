@@ -138,6 +138,7 @@
     <ClInclude Include="include\com_singleton.hpp" />
     <ClInclude Include="include\com_thread_pool.hpp" />
     <ClInclude Include="include\com_typename.hpp" />
+    <ClInclude Include="include\db_hiredis.hpp" />
     <ClInclude Include="include\db_mysqlpp.hpp" />
     <ClInclude Include="include\logger.hpp" />
     <ClInclude Include="include\mem_buffer.hpp" />

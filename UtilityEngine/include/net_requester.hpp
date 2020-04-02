@@ -30,7 +30,7 @@ protected:
 	io_service_iface*		m_io_service;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
+template<class session_t, class handler_manager>
 class requester : public requester_iface
 {
 public:
@@ -41,7 +41,7 @@ public:
 	requester& operator=(const requester&) = delete;
 
 	using sokcet_mode = typename session_t::socket_mode;
-	using dispatcher_t = dispatcher;
+	using dispatcher_t = typename task::dispatcher;
 	using message_t = typename session_t::message_t;
 public:
 	void init(io_service_iface* io_service, dispatcher_t* _dispatcher);
@@ -66,7 +66,7 @@ protected:
 	std::size_t			m_recv_buffer_size = session_t::MAX_MSG_PACKET_LEN * 10;
 	std::size_t			m_send_buffer_size = session_t::MAX_MSG_PACKET_LEN * 10;
 	//! for msg handle
-	msg::controler_wrap< message_t, handler_manager, dispatcher> m_controler;
+	msg::controler_wrap< message_t, handler_manager> m_controler;
 
 	std::atomic_int			m_state;
 	std::promise<bool>		m_can_stop;

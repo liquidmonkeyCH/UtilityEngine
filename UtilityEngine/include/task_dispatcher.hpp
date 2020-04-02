@@ -7,6 +7,7 @@
 #define __TASK_DISPATCHER_HPP__
 
 #include "msg_controler.hpp"
+#include "com_thread_pool.hpp"
 
 namespace Utility
 {
@@ -14,16 +15,16 @@ namespace Utility
 namespace task
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class dispatcher_iface
+class dispatcher
 {
 public:
 	struct task_info
 	{
-		msg::controler_iface*		m_controler;
-		task::object_iface*			m_obj;
+		msg::controler_iface* m_controler;
+		task::object_iface* m_obj;
 		std::uint32_t				m_compkey;
-		mem::message*				m_message;
-		void*						m_userdata;
+		mem::message* m_message;
+		void* m_userdata;
 
 		void run(void)
 		{
@@ -31,9 +32,17 @@ public:
 		}
 	};
 public:
-	virtual void start(std::uint32_t nworker) = 0;
-	virtual void stop(void) = 0;
-	virtual void dispatch(task_info&& _task) = 0;
+	dispatcher(void);
+	~dispatcher(void);
+
+	dispatcher(const dispatcher&) = delete;
+	dispatcher& operator=(const dispatcher&) = delete;
+
+	virtual void start(std::uint32_t nworker);
+	virtual void stop(void);
+	virtual void dispatch(task_info&& _task);
+private:
+	com::task_threadpool<task_info> m_workers;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace task

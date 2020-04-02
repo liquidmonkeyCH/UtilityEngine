@@ -15,7 +15,7 @@
 #include "msg_handler_manager_map.hpp"
 #include "msg_handler_manager_deque.hpp"
 
-#include "task_dispatcher_balance.hpp"
+#include "task_dispatcher.hpp"
 
 using namespace Utility;
 class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::message_wrap<mem::rotative_buffer<MAX_PACKET_LEN>,MAX_PACKET_LEN>>
@@ -54,7 +54,7 @@ int handler(task::object_iface* obj, mem::message* msg, void* ptr)
 	return 0;
 }
 
-class GameServer : public net::responder <GameSession, msg::handler_manager_deque, task::dispatcher_balance>
+class GameServer : public net::responder <GameSession, msg::handler_manager_deque>
 {
 public:
 	virtual void on_start(void)

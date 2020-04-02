@@ -33,8 +33,8 @@ public:
 	io_service_iface(const io_service_iface&) = delete;
 	io_service_iface& operator=(const io_service_iface&) = delete;
 
-	template<class session_t, class handler_manager, class dispatcher> friend class responder;
-	template<class session_t, class handler_manager, class dispatcher> friend class requester;
+	template<class session_t, class handler_manager> friend class responder;
+	template<class session_t, class handler_manager> friend class requester;
 	template<socket_type st,class message_wrap> friend class session_wrap;
 	friend class session_iface;
 public:

@@ -130,12 +130,6 @@
     <ClInclude Include="include\task_dispatcher.hpp">
       <Filter>Core\task</Filter>
     </ClInclude>
-    <ClInclude Include="include\task_dispatcher_balance.hpp">
-      <Filter>Core\task</Filter>
-    </ClInclude>
-    <ClInclude Include="include\task_dispatcher_pool.hpp">
-      <Filter>Core\task</Filter>
-    </ClInclude>
     <ClInclude Include="include\task_object.hpp">
       <Filter>Core\task</Filter>
     </ClInclude>
@@ -177,17 +171,14 @@
     <ClCompile Include="src\net_socket.cpp">
       <Filter>Core\net</Filter>
     </ClCompile>
-    <ClCompile Include="src\task_dispatcher_balance.cpp">
-      <Filter>Core\task</Filter>
-    </ClCompile>
-    <ClCompile Include="src\task_dispatcher_pool.cpp">
-      <Filter>Core\task</Filter>
-    </ClCompile>
     <ClCompile Include="src\task_object.cpp">
       <Filter>Core\task</Filter>
     </ClCompile>
     <ClCompile Include="src\logger.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\task_dispatcher.cpp">
+      <Filter>Core\task</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

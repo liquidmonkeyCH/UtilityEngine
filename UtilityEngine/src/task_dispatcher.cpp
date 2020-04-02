@@ -1,10 +1,10 @@
 /**
-* @file task_dispatcher_pool.cpp
+* @file task_dispatcher.cpp
 *
 * @author Hourui (liquidmonkey)
 */
 
-#include "task_dispatcher_pool.hpp"
+#include "task_dispatcher.hpp"
 
 namespace Utility
 {
@@ -12,40 +12,29 @@ namespace Utility
 namespace task
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-dispatcher_pool::dispatcher_pool(void)
-: m_running(false)
+dispatcher::dispatcher(void)
 {}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-dispatcher_pool::~dispatcher_pool(void)
+dispatcher::~dispatcher(void)
 {
 	stop();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-dispatcher_pool::stop(void)
+dispatcher::stop(void)
 {
-	std::lock_guard<std::mutex> lock(m_mutex);
-	if (!m_running)
-		return;
-
 	m_workers.safe_stop();
-	m_running = false;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-dispatcher_pool::start(std::uint32_t nworker)
+dispatcher::start(std::uint32_t nworker)
 {
 	assert(nworker > 0);
-	std::lock_guard<std::mutex> lock(m_mutex);
-	if (m_running)
-		return;
-
-	m_running = true;
 	m_workers.init(nworker);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-dispatcher_pool::dispatch(task_info&& _task)
+dispatcher::dispatch(task_info&& _task)
 {
 	m_workers.schedule(std::move(_task));
 }

@@ -4,8 +4,8 @@
 * @author Hourui (liquidmonkey)
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-void responder<session_t, handler_manager, dispatcher>::init(size_t max_session, io_service_iface* io_service, dispatcher_t* _dispatcher)
+template<class session_t, class handler_manager>
+void responder<session_t, handler_manager>::init(size_t max_session, io_service_iface* io_service, dispatcher_t* _dispatcher)
 {
 	if (m_io_service)
 		Clog::error_throw(errors::logic, "server initialized!");
@@ -17,8 +17,8 @@ void responder<session_t, handler_manager, dispatcher>::init(size_t max_session,
 	m_controler.init(_dispatcher);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-void responder<session_t, handler_manager, dispatcher>::start(const char* host, std::uint32_t port)
+template<class session_t, class handler_manager>
+void responder<session_t, handler_manager>::start(const char* host, std::uint32_t port)
 {
 	bool exp = false;
 	if (!m_running.compare_exchange_strong(exp, true))
@@ -36,8 +36,8 @@ void responder<session_t, handler_manager, dispatcher>::start(const char* host, 
 	m_io_service->track_server(this);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-void responder<session_t, handler_manager, dispatcher>::stop(void)
+template<class session_t, class handler_manager>
+void responder<session_t, handler_manager>::stop(void)
 {
 	bool exp = true;
 	if (!m_running.compare_exchange_strong(exp, false))
@@ -75,8 +75,8 @@ void responder<session_t, handler_manager, dispatcher>::stop(void)
 	framework::net_free();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-session_t* responder<session_t, handler_manager, dispatcher>::get_session(void)
+template<class session_t, class handler_manager>
+session_t* responder<session_t, handler_manager>::get_session(void)
 {
 	std::lock_guard<std::mutex> lock(m_session_mutex);
 	if (!m_running)
@@ -85,8 +85,8 @@ session_t* responder<session_t, handler_manager, dispatcher>::get_session(void)
 	return m_session_pool.malloc();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-void responder<session_t, handler_manager, dispatcher>::process_accept(per_io_data* data, sockaddr_storage* addr, session_iface** se)
+template<class session_t, class handler_manager>
+void responder<session_t, handler_manager>::process_accept(per_io_data* data, sockaddr_storage* addr, session_iface** se)
 {
 	session_t* session = get_session();
 	if (!session)
@@ -103,14 +103,14 @@ void responder<session_t, handler_manager, dispatcher>::process_accept(per_io_da
 	*se = session;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-void responder<session_t, handler_manager, dispatcher>::post_request(session_iface* session, mem::message* msg, void* ptr)
+template<class session_t, class handler_manager>
+void responder<session_t, handler_manager>::post_request(session_iface* session, mem::message* msg, void* ptr)
 {
 	m_controler.post_request(session, session->compkey(), msg, ptr);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-void responder<session_t, handler_manager, dispatcher>::on_close_session(session_iface* session)
+template<class session_t, class handler_manager>
+void responder<session_t, handler_manager>::on_close_session(session_iface* session)
 {
 	std::lock_guard<std::mutex> lock(m_session_mutex);
 	m_session_pool.free(dynamic_cast<session_t*>(session));

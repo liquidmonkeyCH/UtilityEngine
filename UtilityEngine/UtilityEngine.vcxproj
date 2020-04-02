@@ -163,8 +163,6 @@
     <ClInclude Include="include\net_session.hpp" />
     <ClInclude Include="include\net_socket.hpp" />
     <ClInclude Include="include\task_dispatcher.hpp" />
-    <ClInclude Include="include\task_dispatcher_balance.hpp" />
-    <ClInclude Include="include\task_dispatcher_pool.hpp" />
     <ClInclude Include="include\task_object.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -177,8 +175,7 @@
     <ClCompile Include="src\net_io_service_iocp.cpp" />
     <ClCompile Include="src\net_session.cpp" />
     <ClCompile Include="src\net_socket.cpp" />
-    <ClCompile Include="src\task_dispatcher_balance.cpp" />
-    <ClCompile Include="src\task_dispatcher_pool.cpp" />
+    <ClCompile Include="src\task_dispatcher.cpp" />
     <ClCompile Include="src\task_object.cpp" />
   </ItemGroup>
   <ItemGroup>

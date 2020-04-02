@@ -12,24 +12,24 @@
 namespace Utility
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-namespace task{ class dispatcher_iface; }
+namespace task{ class dispatcher; }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 namespace msg
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 class controler_iface
 {
-	friend class task::dispatcher_iface;
+	friend class task::dispatcher;
 	virtual void handle_wrap(task::object_iface* obj, std::uint32_t compkey, mem::message* message, void* ptr) = 0;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class message_wrap,class handler_manager,class dispatcher>
+template<class message_wrap,class handler_manager>
 class controler_wrap : public handler_manager,public controler_iface
 {
 public:
-	friend class task::dispatcher_iface;
+	friend class task::dispatcher;
 	using message_t = message_wrap;
-	using dispatcher_t = dispatcher;
+	using dispatcher_t = task::dispatcher;
 public:
 	controler_wrap(void) : m_dispatcher(nullptr){}
 	~controler_wrap(void) = default;

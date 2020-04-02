@@ -4,8 +4,8 @@
 * @author Hourui (liquidmonkey)
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-void requester<session_t, handler_manager, dispatcher>::init(io_service_iface* io_service, dispatcher_t* _dispatcher)
+template<class session_t, class handler_manager>
+void requester<session_t, handler_manager>::init(io_service_iface* io_service, dispatcher_t* _dispatcher)
 {
 	if (m_io_service)
 		Clog::error_throw(errors::logic, "client initialized!");
@@ -14,8 +14,8 @@ void requester<session_t, handler_manager, dispatcher>::init(io_service_iface* i
 	m_controler.init(_dispatcher);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-requester_iface::state requester<session_t, handler_manager, dispatcher>::start(const char* host, std::uint32_t port, std::uint32_t timeout_msecs)
+template<class session_t, class handler_manager>
+requester_iface::state requester<session_t, handler_manager>::start(const char* host, std::uint32_t port, std::uint32_t timeout_msecs)
 {
 	int exp = static_cast<int>(state::none);
 	if (!m_state.compare_exchange_strong(exp, static_cast<int>(state::starting)))
@@ -32,8 +32,8 @@ requester_iface::state requester<session_t, handler_manager, dispatcher>::start(
 	return state::timeout;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-bool requester<session_t, handler_manager, dispatcher>::connect(const char* host, std::uint32_t port, std::uint32_t timeout_msecs)
+template<class session_t, class handler_manager>
+bool requester<session_t, handler_manager>::connect(const char* host, std::uint32_t port, std::uint32_t timeout_msecs)
 {
 	int exp = static_cast<int>(state::starting);
 	if (!m_state.compare_exchange_strong(exp, static_cast<int>(state::connecting)))
@@ -58,8 +58,8 @@ bool requester<session_t, handler_manager, dispatcher>::connect(const char* host
 	return false;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-void requester<session_t, handler_manager, dispatcher>::stop(void)
+template<class session_t, class handler_manager>
+void requester<session_t, handler_manager>::stop(void)
 {
 	int exp = static_cast<int>(state::connected);
 	if (!m_state.compare_exchange_strong(exp, static_cast<int>(state::stopping)))
@@ -72,20 +72,20 @@ void requester<session_t, handler_manager, dispatcher>::stop(void)
 	m_state = static_cast<int>(state::none);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-void requester<session_t, handler_manager, dispatcher>::join(void)
+template<class session_t, class handler_manager>
+void requester<session_t, handler_manager>::join(void)
 {
 	m_can_stop.get_future().get();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-void requester<session_t, handler_manager, dispatcher>::post_request(session_iface* session, mem::message* msg, void* ptr)
+template<class session_t, class handler_manager>
+void requester<session_t, handler_manager>::post_request(session_iface* session, mem::message* msg, void* ptr)
 {
 	m_controler.post_request(session, session->compkey(), msg, ptr);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
-void requester<session_t, handler_manager, dispatcher>::on_close_session(session_iface* session)
+template<class session_t, class handler_manager>
+void requester<session_t, handler_manager>::on_close_session(session_iface* session)
 {
 	(void)session;
 	m_can_stop.set_value(true);

@@ -42,7 +42,7 @@ protected:
 	mem::data_factory<accept_data>	m_accept_data;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class session_t, class handler_manager, class dispatcher>
+template<class session_t, class handler_manager>
 class responder : public responder_iface
 {
 public:
@@ -53,8 +53,8 @@ public:
 	responder_iface& operator=(const responder&) = delete;
 
 	using sokcet_mode = typename session_t::socket_mode;
-	using dispatcher_t = dispatcher;
 	using message_t = typename session_t::message_t;
+	using dispatcher_t = typename task::dispatcher;
 public:
 	void init(size_t max_session, io_service_iface* io_service, dispatcher_t* _dispatcher);
 
@@ -76,7 +76,7 @@ protected:
 	std::size_t				m_recv_buffer_size = session_t::MAX_MSG_PACKET_LEN * 10;
 	std::size_t				m_send_buffer_size = session_t::MAX_MSG_PACKET_LEN * 10;
 	//! for hanlder
-	msg::controler_wrap< message_t, handler_manager, dispatcher> m_controler;
+	msg::controler_wrap< message_t, handler_manager> m_controler;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "net_responder.inl"

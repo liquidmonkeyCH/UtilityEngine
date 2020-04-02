@@ -31,8 +31,8 @@ public:
 	};
 	enum class state{ none,connected,closing };
 	friend class io_service_iface;
-	template<class session_t, class handler_manager, class dispatcher> friend class responder;
-	template<class session_t, class handler_manager, class dispatcher> friend class requester;
+	template<class session_t, class handler_manager> friend class responder;
+	template<class session_t, class handler_manager> friend class requester;
 public:
 	session_iface(void);
 	virtual ~session_iface(void) = default;
@@ -67,8 +67,8 @@ class session_wrap : public session_iface
 public:
 	using socket_mode = socket_wrap<st> ;
 	using message_t = pares_message_wrap;
-	template<class session_t, class handler_manager, class dispatcher> friend class responder;
-	template<class session_t, class handler_manager, class dispatcher> friend class requester;
+	template<class session_t, class handler_manager> friend class responder;
+	template<class session_t, class handler_manager> friend class requester;
 	static constexpr std::size_t MAX_MSG_PACKET_LEN = message_t::MAX_MSG_PACKET_LEN;
 public:
 	session_wrap(void);

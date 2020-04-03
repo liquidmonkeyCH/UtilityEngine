@@ -28,21 +28,8 @@ public:
 	std::uint32_t compkey(void);
 	virtual void handle_error(std::uint32_t compkey) = 0;
 	virtual void do_close(void* ptr) = 0;
-	
-	// for pool mode
-	bool add_ref(void);
-	void sub_ref(void);
-	void wait_ref(void);
-	void reset_ref(void);
-
-	// for balance mode
-	void set_worker_index(std::uint32_t worker);
-	std::uint32_t get_worker_index(void);
 protected:
 	std::atomic<std::uint32_t> m_compkey;
-	std::atomic<std::uint32_t> m_worker_index;
-	std::mutex m_ref_mutex;
-	std::atomic_int m_ref;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class message_wrap_t>

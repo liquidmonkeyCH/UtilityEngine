@@ -38,9 +38,9 @@ public:
 	dispatcher(const dispatcher&) = delete;
 	dispatcher& operator=(const dispatcher&) = delete;
 
-	virtual void start(std::uint32_t nworker);
-	virtual void stop(void);
-	virtual void dispatch(task_info&& _task);
+	void start(std::uint32_t nworker);
+	void stop(void);
+	void dispatch(task_info&& _task);
 private:
 	com::task_threadpool<task_info> m_workers;
 };

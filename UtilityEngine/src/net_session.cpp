@@ -52,16 +52,13 @@ session_iface::close(reason st)
 	m_io_service->untrack_session(this);
 	m_socket->close();
 	m_state = static_cast<int>(state::none);
-
-	++m_compkey;
-	m_parent->post_request(this,nullptr,(void*)st);
+	//m_parent->post_request(this,nullptr,(void*)st);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-session_iface::handle_error(std::uint32_t compkey)
+session_iface::handle_error(void)
 {
-	if (m_compkey == compkey)
-		close(reason::cs_handle_error);
+	close(reason::cs_handle_error);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 bool

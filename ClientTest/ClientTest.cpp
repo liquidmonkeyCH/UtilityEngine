@@ -11,7 +11,7 @@
 
 #include "mem_rotative_buffer.hpp"
 #include "mem_stream_buffer.hpp"
-#include "msg_message.hpp"
+#include "msg_pares_zero.hpp"
 
 #include "msg_handler_manager_map.hpp"
 #include "msg_handler_manager_deque.hpp"
@@ -21,7 +21,7 @@
 
 using namespace Utility;
 
-class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::message_wrap<mem::rotative_buffer<MAX_PACKET_LEN>, MAX_PACKET_LEN> >
+class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::comfirmer<mem::rotative_buffer<MAX_PACKET_LEN>, MAX_PACKET_LEN> >
 {
 public:
 	void on_connect(void)

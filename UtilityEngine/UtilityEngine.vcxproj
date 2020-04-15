@@ -153,6 +153,8 @@
     <ClInclude Include="include\msg_handler_manager_deque.hpp" />
     <ClInclude Include="include\msg_handler_manager_map.hpp" />
     <ClInclude Include="include\msg_message.hpp" />
+    <ClInclude Include="include\msg_pares_len.hpp" />
+    <ClInclude Include="include\msg_pares_zero.hpp" />
     <ClInclude Include="include\net_defines.hpp" />
     <ClInclude Include="include\net_framework.hpp" />
     <ClInclude Include="include\net_io_service.hpp" />

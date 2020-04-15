@@ -61,9 +61,8 @@ void stream_buffer<N>::init(std::size_t size)
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<std::size_t N>
-net_size_t stream_buffer<N>::readable_size(net_size_t exp)
+net_size_t stream_buffer<N>::_readable_size(net_size_t exp)
 {
-	std::lock_guard<std::mutex> lock(m_mutex);
 	m_lastread = m_readable;
 	if (m_lastread < exp) m_lastread = 0;
 	return static_cast<net_size_t>(m_lastread);
@@ -73,7 +72,7 @@ template<std::size_t N>
 const char* stream_buffer<N>::read(net_size_t& size)
 {
 	std::size_t len = m_head->m_buffer + N - m_reader;
-	std::lock_guard<std::mutex> lock(m_mutex);
+	std::lock_guard<std::mutex> lock(this->m_mutex);
 	len = len > m_readable ? m_readable : len;
 	size = size > len ? static_cast<net_size_t>(len) : size;
 	m_lastread = size;
@@ -83,7 +82,7 @@ const char* stream_buffer<N>::read(net_size_t& size)
 template<std::size_t N>
 void stream_buffer<N>::commit_read(net_size_t size)
 {
-	std::lock_guard<std::mutex> lock(m_mutex);
+	std::lock_guard<std::mutex> lock(this->m_mutex);
 	assert(size <= m_readable);
 	m_readable -= size;
 	net_size_t len = static_cast<net_size_t>(m_head->m_buffer + N - m_reader);
@@ -126,7 +125,7 @@ char* stream_buffer<N>::write(net_size_t& size)
 template<std::size_t N>
 bool stream_buffer<N>::commit_write(net_size_t size)
 {
-	std::lock_guard<std::mutex> lock(m_mutex);
+	std::lock_guard<std::mutex> lock(this->m_mutex);
 #ifndef NDEBUG
 	assert(m_last_malloc >= size);
 	m_last_malloc = 0;

@@ -59,9 +59,8 @@ void rotative_buffer<N>::init(std::size_t size)
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<std::size_t N>
-net_size_t rotative_buffer<N>::readable_size(net_size_t exp)
+net_size_t rotative_buffer<N>::_readable_size(net_size_t exp)
 {
-	std::lock_guard<std::mutex> lock(m_mutex);
 	//! ¡ý******¡ý*******************¡ý******¡ý**********¡ý
 	//! head reader             writer  final       tail
 	m_lastread = (m_writer >= m_reader) ? m_writer - m_reader : m_size - (m_reader - m_writer);
@@ -79,7 +78,7 @@ const char* rotative_buffer<N>::read(net_size_t& size)
 	if (size > MAX_MSG_PACKET_LEN || size == 0)
 		size = MAX_MSG_PACKET_LEN;
 
-	std::lock_guard<std::mutex> lock(m_mutex);
+	std::lock_guard<std::mutex> lock(this->m_mutex);
 	//! ¡ý******¡ý*******************¡ý******¡ý**********¡ý
 	//! head  reader			   writer  final     tail
 	if (m_writer >= m_reader) {
@@ -118,7 +117,7 @@ template<std::size_t N>
 void rotative_buffer<N>::commit_read(net_size_t size)
 {
 	assert(size <= m_lastread);
-	std::lock_guard<std::mutex> lock(m_mutex);
+	std::lock_guard<std::mutex> lock(this->m_mutex);
 	m_reader += size;
 	//! reader touch finial
 	//!	                        |   size  |
@@ -133,7 +132,7 @@ void rotative_buffer<N>::commit_read(net_size_t size)
 template<std::size_t N>
 net_size_t rotative_buffer<N>::writable_size(void)
 {
-	std::lock_guard<std::mutex> lock(m_mutex);
+	std::lock_guard<std::mutex> lock(this->m_mutex);
 	//! ¡ý******¡ý*******************¡ý******¡ý**********¡ý
 	//! head  writer            reader  final       tail
 	return static_cast<net_size_t>((m_reader > m_writer) ? m_reader - m_writer - 1 : m_size - (m_writer - m_reader) - 1);
@@ -149,7 +148,7 @@ char* rotative_buffer<N>::write(net_size_t& size)
 	if (size > MAX_MSG_PACKET_LEN || size == 0)
 		size = MAX_MSG_PACKET_LEN;
 
-	std::lock_guard<std::mutex> lock(m_mutex);
+	std::lock_guard<std::mutex> lock(this->m_mutex);
 	//!	|   len	  |                   |    size     |
 	//! | copy |                      | left | copy |
 	//! ¡ý*********¡ý*******************¡ý******¡ý**********¡ý
@@ -168,7 +167,7 @@ char* rotative_buffer<N>::write(net_size_t& size)
 template<std::size_t N>
 bool rotative_buffer<N>::commit_write(net_size_t size)
 {
-	std::lock_guard<std::mutex> lock(m_mutex);
+	std::lock_guard<std::mutex> lock(this->m_mutex);
 #ifndef NDEBUG
 	assert(m_last_malloc >= size);
 	m_last_malloc = 0;

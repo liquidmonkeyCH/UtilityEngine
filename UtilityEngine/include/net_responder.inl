@@ -106,7 +106,7 @@ void responder<session_t, handler_manager>::process_accept(per_io_data* data, so
 template<class session_t, class handler_manager>
 void responder<session_t, handler_manager>::post_request(session_iface* session, mem::message* msg, void* ptr)
 {
-	m_controler.post_request(session, session->compkey(), msg, ptr);
+	m_controler.post_request(session, msg, ptr);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class session_t, class handler_manager>

@@ -145,6 +145,12 @@
     <ClInclude Include="include\db_hiredis.hpp">
       <Filter>Core\db</Filter>
     </ClInclude>
+    <ClInclude Include="include\msg_pares_len.hpp">
+      <Filter>Core\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="include\msg_pares_zero.hpp">
+      <Filter>Core\msg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\com_md5.cpp">

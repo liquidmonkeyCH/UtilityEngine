@@ -43,7 +43,7 @@ public:
 	bool is_connected(void);
 protected:
 	void set_connected(framework* parent,fd_t fd, sockaddr_storage* addr);
-	void handle_error(std::uint32_t compkey);
+	void handle_error(void);
 	//! for wrap
 	virtual void clear(void) = 0;
 	virtual bool process_recv(net_size_t size) = 0;

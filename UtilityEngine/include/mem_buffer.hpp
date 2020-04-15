@@ -7,6 +7,7 @@
 #define __MEM_BUFFER_HPP__
 
 #include "mem_message.hpp"
+#include <mutex>
 
 namespace Utility
 {
@@ -39,7 +40,11 @@ public:
 	//! Returns: total readable size, 0 when readable size less-than exp.
 	//! Change member [m_lastread] to 0 when readable size less-than exp.
 	//! Next: readable size less-than exp [m_lastread = 0]. Need wait for readable notify.
-	virtual net_size_t readable_size(net_size_t exp = 0) = 0;
+	net_size_t readable_size(net_size_t exp = 0)
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		return _readable_size(exp);
+	}
 	//! Reg read operation
 	//! Param:(in-out)size [0~MAX_PACKET_LEN]
 	//! Always change member [m_lastread]
@@ -47,6 +52,13 @@ public:
 	//! Commit read operation
 	//! Release space for write operation
 	virtual void commit_read(net_size_t size) = 0;
+protected:
+	//! Returns: total readable size, 0 when readable size less-than exp.
+	//! Change member [m_lastread] to 0 when readable size less-than exp.
+	//! Next: readable size less-than exp [m_lastread = 0]. Need wait for readable notify.
+	virtual net_size_t _readable_size(net_size_t exp) = 0;
+
+	std::mutex m_mutex;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace mem

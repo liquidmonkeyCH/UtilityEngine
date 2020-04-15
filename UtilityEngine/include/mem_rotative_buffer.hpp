@@ -7,7 +7,6 @@
 #define __MEM_ROTATIVE_BUFFER_HPP__
 
 #include "mem_buffer.hpp"
-#include <mutex>
 
 namespace Utility
 {
@@ -37,10 +36,6 @@ public:
 	//!	Next:	 |Need notify readable |No need notify readable|
 	bool commit_write(net_size_t size);
 
-	//! Returns: total readable size, 0 when readable size less-than exp.
-	//! Change member [m_lastread] to 0 when readable size less-than exp.
-	//! Next: readable size less-than exp [m_lastread = 0]. Need wait for readable notify.
-	net_size_t readable_size(net_size_t exp = 0);
 	//! Reg read operation
 	//! Param:(in-out)size [0~MAX_PACKET_LEN]
 	//! Always change member [m_lastread]
@@ -58,6 +53,11 @@ public:
 	bool back_up(net_size_t size) override;
 
 	static constexpr std::size_t MAX_MSG_PACKET_LEN = MAX_MESSAGE_LEN;
+protected:
+	//! Returns: total readable size, 0 when readable size less-than exp.
+	//! Change member [m_lastread] to 0 when readable size less-than exp.
+	//! Next: readable size less-than exp [m_lastread = 0]. Need wait for readable notify.
+	net_size_t _readable_size(net_size_t exp);
 private:
 	char*	m_buffer;
 	char*	m_reader;
@@ -70,8 +70,6 @@ private:
 #ifndef NDEBUG
 	std::size_t m_last_malloc;
 #endif
-
-	std::mutex m_mutex;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "mem_rotative_buffer.inl"

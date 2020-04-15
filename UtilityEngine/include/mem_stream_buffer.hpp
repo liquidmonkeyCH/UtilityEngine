@@ -9,7 +9,6 @@
 #include "mem_buffer.hpp"
 #include "mem_data_factory.hpp"
 #include "mem_stream_node.hpp"
-#include <mutex>
 
 namespace Utility
 {
@@ -39,10 +38,6 @@ public:
 	//!	Next:	 |Need notify readable |No need notify readable|
 	bool commit_write(net_size_t size);
 
-	//! Returns: total readable size, 0 when readable size less-than exp.
-	//! Change member [m_lastread] to 0 when readable size less-than exp.
-	//! Next: readable size less-than exp [m_lastread = 0]. Need wait for readable notify.
-	net_size_t readable_size(net_size_t exp = 0);
 	//! Reg read operation
 	//! Param:(in-out)size [0~MAX_PACKET_LEN]
 	//! Always change member [m_lastread]
@@ -61,6 +56,11 @@ public:
 
 	// Reset total number of bytes read since this object was created to zero.
 	void reset(void) override;
+protected:
+	//! Returns: total readable size, 0 when readable size less-than exp.
+	//! Change member [m_lastread] to 0 when readable size less-than exp.
+	//! Next: readable size less-than exp [m_lastread = 0]. Need wait for readable notify.
+	net_size_t _readable_size(net_size_t exp);
 private:
 	const char* _next(net_size_t& size, net_size_t limit);
 public:
@@ -80,9 +80,6 @@ private:
 #ifndef NDEBUG
 	std::size_t m_last_malloc;
 #endif
-
-	std::mutex m_mutex;
-
 	stream_node_t* m_next;
 	net_size_t m_offset;
 };

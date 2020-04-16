@@ -48,6 +48,7 @@ protected:
 	virtual void clear(void) = 0;
 	virtual bool process_recv(net_size_t size) = 0;
 	virtual bool process_send(net_size_t size) = 0;
+	virtual void process_close(reason) = 0;
 protected:
 	io_service_iface* m_io_service;
 	framework* m_parent;
@@ -57,8 +58,6 @@ protected:
 
 	per_io_data m_recv_data;
 	per_io_data m_send_data;
-
-	std::recursive_mutex m_close_mutex;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<socket_type st, class pares_message_wrap>
@@ -83,6 +82,7 @@ protected:
 
 	bool process_recv(net_size_t size);
 	bool process_send(net_size_t size);
+	void process_close(reason);
 protected:
 	bool send_check(net_size_t size);
 	void post_send(bool flag);

@@ -45,14 +45,13 @@ void
 session_iface::close(reason st)
 {
 	int exp = static_cast<int>(state::connected);
-	std::lock_guard<std::recursive_mutex> lock(m_close_mutex);
 	if (!m_state.compare_exchange_strong(exp, static_cast<int>(state::closing)))
 		return;
 
 	m_io_service->untrack_session(this);
 	m_socket->close();
 	m_state = static_cast<int>(state::none);
-	//m_parent->post_request(this,nullptr,(void*)st);
+	process_close(st);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void 

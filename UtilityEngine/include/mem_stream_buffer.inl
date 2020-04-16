@@ -123,9 +123,8 @@ char* stream_buffer<N>::write(net_size_t& size)
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<std::size_t N>
-bool stream_buffer<N>::commit_write(net_size_t size)
+bool stream_buffer<N>::_commit_write(net_size_t size)
 {
-	std::lock_guard<std::mutex> lock(this->m_mutex);
 #ifndef NDEBUG
 	assert(m_last_malloc >= size);
 	m_last_malloc = 0;
@@ -141,7 +140,7 @@ bool stream_buffer<N>::commit_write(net_size_t size)
 		m_writer = m_tail->m_buffer;
 	}
 
-	return (m_lastread == 0);
+	return (m_lastread++ == 0);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // **** message iface

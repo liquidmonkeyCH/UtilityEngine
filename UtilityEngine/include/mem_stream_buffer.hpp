@@ -28,16 +28,6 @@ public:
 	//! Reset initialize 
 	void clear(void);
 
-	//! Returns: total writable size
-	net_size_t writable_size(void);
-	//! Reg write operation
-	//! Param:(in-out)size [0~MAX_PACKET_LEN]
-	char* write(net_size_t& size);
-	//! Commit write operation
-	//! Returns: |true [m_lastread = 0]|false [m_lastread != 0]|
-	//!	Next:	 |Need notify readable |No need notify readable|
-	bool commit_write(net_size_t size);
-
 	//! Reg read operation
 	//! Param:(in-out)size [0~MAX_PACKET_LEN]
 	//! Always change member [m_lastread]
@@ -46,6 +36,21 @@ public:
 	//! Release space for write operation
 	void commit_read(net_size_t size);
 
+	//! Reg write operation
+	//! Param:(in-out)size [0~MAX_PACKET_LEN]
+	char* write(net_size_t& size);
+	//! Returns: total writable size
+	net_size_t writable_size(void);
+protected:
+	//! Returns: total readable size, 0 when readable size less-than exp.
+	//! Change member [m_lastread] to 0 when readable size less-than exp.
+	//! Next: readable size less-than exp [m_lastread = 0]. Need wait for readable notify.
+	net_size_t _readable_size(net_size_t exp);
+	//! Commit write operation
+	//! Returns: |true [m_lastread = 0]|false [m_lastread != 0]|
+	//!	Next:	 |Need notify readable |No need notify readable|
+	bool _commit_write(net_size_t size);
+public:
 	//! message iface
 	// Read a number of bytes.
 	const char* next(net_size_t& size) override;
@@ -54,13 +59,8 @@ public:
 	// Backs up a number of bytes.
 	bool back_up(net_size_t size) override;
 
-	// Reset total number of bytes read since this object was created to zero.
+	// Reset total number of bytes readed to zero since this object was created .
 	void reset(void) override;
-protected:
-	//! Returns: total readable size, 0 when readable size less-than exp.
-	//! Change member [m_lastread] to 0 when readable size less-than exp.
-	//! Next: readable size less-than exp [m_lastread = 0]. Need wait for readable notify.
-	net_size_t _readable_size(net_size_t exp);
 private:
 	const char* _next(net_size_t& size, net_size_t limit);
 public:

@@ -44,10 +44,18 @@ public:
 		m_good = true;
 	}
 
-	void go_bad(void)
+	bool go_bad(void)
 	{
 		std::lock_guard<std::mutex> lock(this->m_mutex);
 		m_good = false;
+		return this->buffer_type::_commit_write(0);
+	}
+
+	bool commit_recv(net_size_t size)
+	{
+		std::lock_guard<std::mutex> lock(this->m_mutex);
+		if (!m_good) return false;
+		return this->buffer_type::_commit_write(size);
 	}
 protected:
 	bool readable_state(net_size_t& exp)

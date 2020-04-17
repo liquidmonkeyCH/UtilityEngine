@@ -26,10 +26,7 @@ public:
 		void* m_userdata;
 		bool m_good;
 
-		void run(void)
-		{
-			m_controler->handle_wrap(m_obj, m_message, m_userdata, m_good);
-		}
+		void run(void);
 	};
 public:
 	dispatcher(void);

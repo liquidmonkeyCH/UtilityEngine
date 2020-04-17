@@ -62,7 +62,7 @@ bool session_wrap<st, pares_message_wrap>::process_send(net_size_t size)
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<socket_type st, class pares_message_wrap>
-void session_wrap<st, pares_message_wrap>::process_close(reason st)
+void session_wrap<st, pares_message_wrap>::process_close(session_iface::reason st)
 {
 	if(m_recv_buffer.go_bad())
 		m_parent->post_request(this, &m_recv_buffer, (void*)st);

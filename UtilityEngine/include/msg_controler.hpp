@@ -44,8 +44,10 @@ public:
 		m_dispatcher = _dispatcher;
 	}
 
-	void post_request(task::object_iface* obj, mem::message* message, void* ptr, bool dispatcher = false)
+	void post_request(task::object_iface* obj, void* ptr, bool dispatcher = false)
 	{
+		mem::message* message = obj->get_message();
+		if (!message) return;
 		switch (dynamic_cast<message_t*>(message)->comfirm())
 		{
 		case state::ok:
@@ -81,7 +83,7 @@ private:
 		}
 
 		msg->commit();
-		post_request(obj, message, ptr, true);
+		post_request(obj, ptr, true);
 	}
 private:
 	dispatcher_t* m_dispatcher;

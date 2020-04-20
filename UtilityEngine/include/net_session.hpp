@@ -77,6 +77,8 @@ protected:
 
 	void clear(void);
 	void do_close(void*);
+	mem::message* get_message(void) { return &m_recv_buffer; }
+
 	virtual void on_close(reason){}
 	virtual void on_connect(void){}
 

@@ -37,6 +37,7 @@ public:
 
 	virtual void handle_error(void) = 0;
 	virtual void do_close(void* ptr) = 0;
+	virtual mem::message* get_message(void) = 0;
 protected:
 	object_iface* m_parent;
 };

@@ -65,7 +65,7 @@ template<socket_type st, class pares_message_wrap>
 void session_wrap<st, pares_message_wrap>::process_close(reason close_reason)
 {
 	if(m_recv_buffer.go_bad())
-		m_parent->post_request(this, &m_recv_buffer, (void*)close_reason);
+		m_parent->post_request(this, (void*)close_reason);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<socket_type st, class pares_message_wrap>
@@ -75,7 +75,7 @@ bool session_wrap<st, pares_message_wrap>::process_recv(net_size_t size)
 		return false;
 
 	if (m_recv_buffer.commit_recv(size))
-		m_parent->post_request(this, &m_recv_buffer, nullptr);
+		m_parent->post_request(this, nullptr);
 
 	m_recv_data.m_buffer.len = MAX_MSG_PACKET_LEN;
 	m_recv_data.m_buffer.buf = m_recv_buffer.write(m_recv_data.m_buffer.len);

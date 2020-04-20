@@ -54,7 +54,7 @@ public:
 
 	using sokcet_mode = typename session_t::socket_mode;
 	using message_t = typename session_t::message_t;
-	using dispatcher_t = typename task::dispatcher;
+	using dispatcher_t = task::dispatcher;
 public:
 	void init(size_t max_session, io_service_iface* io_service, dispatcher_t* _dispatcher);
 

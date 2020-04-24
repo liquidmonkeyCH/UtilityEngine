@@ -42,7 +42,7 @@ public:
 
 	using sokcet_mode = typename session_t::socket_mode;
 	using message_t = typename session_t::message_t;
-	using dispatcher_t = task::dispatcher;
+	using dispatcher_t = msg::dispatcher;
 public:
 	void init(io_service_iface* io_service, dispatcher_t* _dispatcher);
 	state start(const char* host, std::uint32_t port, std::uint32_t timeout_msecs = 0);

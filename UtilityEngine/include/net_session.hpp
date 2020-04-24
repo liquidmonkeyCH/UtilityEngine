@@ -8,9 +8,9 @@
 
 #include <mutex>
 #include "net_socket.hpp"
-#include "task_object.hpp"
 #include "net_framework.hpp"
 #include "net_io_service.hpp"
+#include "msg_object.hpp"
 
 namespace Utility
 {
@@ -18,16 +18,17 @@ namespace Utility
 namespace net
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class session_iface : public task::object_iface
+class session_iface : public msg::object_iface
 {
 public:
-	enum class reason{ 
+	enum class reason : std::uint32_t {
 		cs_service_stop,
 		cs_connect_timeout,
 		cs_connect_peer_close,
 		cs_send_buffer_overflow,
 		cs_recv_buffer_overflow,
-		cs_handle_error
+		cs_pares_error,
+		cs_handle_error,
 	};
 	enum class state{ none,connected,closing };
 	friend class io_service_iface;

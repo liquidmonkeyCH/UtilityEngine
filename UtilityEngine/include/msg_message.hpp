@@ -51,6 +51,12 @@ public:
 		return this->buffer_type::_commit_write(0);
 	}
 
+	bool is_good(void)
+	{
+		std::lock_guard<std::mutex> lock(this->m_mutex);
+		return m_good;
+	}
+
 	bool commit_recv(net_size_t size)
 	{
 		std::lock_guard<std::mutex> lock(this->m_mutex);

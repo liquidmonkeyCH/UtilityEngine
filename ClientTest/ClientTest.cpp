@@ -15,8 +15,8 @@
 
 #include "msg_handler_manager_map.hpp"
 #include "msg_handler_manager_deque.hpp"
+#include "msg_dispatcher.hpp"
 
-#include "task_dispatcher.hpp"
 #include "com_service_manager.hpp"
 
 using namespace Utility;
@@ -31,11 +31,11 @@ public:
 };
 
 
-int handler(task::object_iface* obj, mem::message* msg, void* ptr)
+int handler(msg::object_iface* obj, mem::message* _msg, void* ptr)
 {
 	(void)ptr;
 	unsigned long len = 0;
-	const char* p = msg->next(len);
+	const char* p = _msg->next(len);
 	GameSession* session = dynamic_cast<GameSession*>(obj);
 
 	session->send(p, len);

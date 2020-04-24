@@ -148,6 +148,7 @@
     <ClInclude Include="include\mem_stream.hpp" />
     <ClInclude Include="include\mem_stream_buffer.hpp" />
     <ClInclude Include="include\mem_stream_node.hpp" />
+    <ClInclude Include="include\msg_channel.hpp" />
     <ClInclude Include="include\msg_controler.hpp" />
     <ClInclude Include="include\msg_defines.hpp" />
     <ClInclude Include="include\msg_handler_manager_deque.hpp" />
@@ -164,21 +165,21 @@
     <ClInclude Include="include\net_responder.hpp" />
     <ClInclude Include="include\net_session.hpp" />
     <ClInclude Include="include\net_socket.hpp" />
-    <ClInclude Include="include\task_dispatcher.hpp" />
-    <ClInclude Include="include\task_object.hpp" />
+    <ClInclude Include="include\msg_dispatcher.hpp" />
+    <ClInclude Include="include\msg_object.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application.cpp" />
     <ClCompile Include="src\com_md5.cpp" />
     <ClCompile Include="src\logger.cpp" />
+    <ClCompile Include="src\msg_channel.cpp" />
     <ClCompile Include="src\net_framework.cpp" />
     <ClCompile Include="src\net_io_service.cpp" />
     <ClCompile Include="src\net_io_service_epoll.cpp" />
     <ClCompile Include="src\net_io_service_iocp.cpp" />
     <ClCompile Include="src\net_session.cpp" />
     <ClCompile Include="src\net_socket.cpp" />
-    <ClCompile Include="src\task_dispatcher.cpp" />
-    <ClCompile Include="src\task_object.cpp" />
+    <ClCompile Include="src\msg_dispatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\mem_data_factory.inl" />
@@ -187,6 +188,7 @@
     <None Include="include\net_requester.inl" />
     <None Include="include\net_responder.inl" />
     <None Include="include\net_session.inl" />
+    <None Include="include\msg_object.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

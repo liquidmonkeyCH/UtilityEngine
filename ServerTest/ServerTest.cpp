@@ -10,12 +10,11 @@
 
 #include "mem_rotative_buffer.hpp"
 #include "mem_stream_buffer.hpp"
-#include "msg_pares_zero.hpp"
 
+#include "msg_pares_zero.hpp"
 #include "msg_handler_manager_map.hpp"
 #include "msg_handler_manager_deque.hpp"
-
-#include "task_dispatcher.hpp"
+#include "msg_dispatcher.hpp"
 
 using namespace Utility;
 class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::comfirmer<mem::rotative_buffer<MAX_PACKET_LEN>,MAX_PACKET_LEN>>
@@ -31,7 +30,7 @@ public:
 };
 
 std::atomic<std::uint64_t> total_msg(0);
-int handler(task::object_iface* obj, mem::message* msg, void* ptr)
+int handler(msg::object_iface* obj, mem::message* _msg, void* ptr)
 {
 	(void)ptr;
 	++total_msg;
@@ -40,7 +39,7 @@ int handler(task::object_iface* obj, mem::message* msg, void* ptr)
 
 	net_size_t len = 0,size = 0;
 	while (true) {
-		const char* p = msg->next(len);
+		const char* p = _msg->next(len);
 		if (!p) break;
 		
 		memcpy(buffer + size, p, len);

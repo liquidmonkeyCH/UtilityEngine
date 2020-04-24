@@ -6,7 +6,7 @@
 #ifndef __MSG_CONTROLER_HPP__
 #define __MSG_CONTROLER_HPP__
 
-#include "task_dispatcher.hpp"
+#include "msg_dispatcher.hpp"
 #include "msg_message.hpp"
 #include "logger.hpp"
 
@@ -18,17 +18,16 @@ namespace msg
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 class controler_iface
 {
-	friend class task::dispatcher;
-	virtual void handle_wrap(task::object_iface* obj, mem::message* message, void* ptr, bool good) = 0;
+	friend class dispatcher;
+	virtual void handle_wrap(object_iface* obj, mem::message* message, void* ptr, bool good) = 0;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class message_wrap,class handler_manager>
 class controler_wrap : public handler_manager,public controler_iface
 {
 public:
-	friend class task::dispatcher;
+	friend class dispatcher;
 	using message_t = message_wrap;
-	using dispatcher_t = task::dispatcher;
 public:
 	controler_wrap(void) : m_dispatcher(nullptr){}
 	~controler_wrap(void) = default;
@@ -36,7 +35,7 @@ public:
 	controler_wrap(const controler_wrap&) = delete;
 	controler_wrap& operator=(const controler_wrap&) = delete;
 public:
-	void init(dispatcher_t* _dispatcher)
+	void init(dispatcher* _dispatcher)
 	{
 		if (m_dispatcher)
 			Clog::error_throw(errors::logic, "controler initialized!");
@@ -44,14 +43,12 @@ public:
 		m_dispatcher = _dispatcher;
 	}
 
-	void post_request(task::object_iface* obj, void* ptr, bool dispatcher = false)
+	void post_request(object_iface* obj, mem::message* message, bool is_dispatcher = false)
 	{
-		mem::message* message = obj->get_message();
-		if (!message) return;
 		switch (dynamic_cast<message_t*>(message)->comfirm())
 		{
 		case state::ok:
-			m_dispatcher->dispatch({ this, obj, message, ptr, true });
+			obj->post_message(m_dispatcher);
 			break;
 		case state::pending:
 			break;
@@ -59,22 +56,26 @@ public:
 			obj->handle_error();
 			break;
 		case state::bad:
-			if (dispatcher) obj->do_close(ptr);
-			else m_dispatcher->dispatch({ this, obj, message, ptr, false });
+			if (is_dispatcher) obj->do_close();
+			else obj->post_message(m_dispatcher);
 			break;
 		default:
 			break;
 		}
 	}
 private:
-	void handle_wrap(task::object_iface* obj, mem::message* message, void* ptr, bool good)
+	void handle_wrap(object_iface* obj)
 	{
-		if (!good){
-			obj->do_close(ptr);
+		object_iface* real_obj;
+		mem::message* message = obj->get_message(real_obj);
+		message_t* msg = dynamic_cast<message_t*>(message);
+		std::uint32_t reason;
+
+		if (!msg->is_good()){
+			obj->do_close();
 			return;
 		}
 
-		message_t* msg = dynamic_cast<message_t*>(message);
 		handler_t handle = this->get_handle(msg);
 		if (!handle || handle(obj, message, ptr) != 0)
 		{
@@ -83,10 +84,10 @@ private:
 		}
 
 		msg->commit();
-		post_request(obj, ptr, true);
+		post_request(real_obj, message, true);
 	}
 private:
-	dispatcher_t* m_dispatcher;
+	dispatcher* m_dispatcher;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace task

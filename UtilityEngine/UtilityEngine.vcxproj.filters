@@ -23,9 +23,6 @@
     <Filter Include="Core\net">
       <UniqueIdentifier>{8edd49c4-9728-4f2a-baaf-ed27f6d1826b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\task">
-      <UniqueIdentifier>{49a5db4e-816e-44a4-b8f5-19c6208b5554}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\com_hex_caster.hpp">
@@ -127,12 +124,6 @@
     <ClInclude Include="include\net_socket.hpp">
       <Filter>Core\net</Filter>
     </ClInclude>
-    <ClInclude Include="include\task_dispatcher.hpp">
-      <Filter>Core\task</Filter>
-    </ClInclude>
-    <ClInclude Include="include\task_object.hpp">
-      <Filter>Core\task</Filter>
-    </ClInclude>
     <ClInclude Include="include\base_defines.hpp">
       <Filter>Core</Filter>
     </ClInclude>
@@ -149,6 +140,15 @@
       <Filter>Core\msg</Filter>
     </ClInclude>
     <ClInclude Include="include\msg_pares_zero.hpp">
+      <Filter>Core\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="include\msg_channel.hpp">
+      <Filter>Core\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="include\msg_dispatcher.hpp">
+      <Filter>Core\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="include\msg_object.hpp">
       <Filter>Core\msg</Filter>
     </ClInclude>
   </ItemGroup>
@@ -177,14 +177,14 @@
     <ClCompile Include="src\net_socket.cpp">
       <Filter>Core\net</Filter>
     </ClCompile>
-    <ClCompile Include="src\task_object.cpp">
-      <Filter>Core\task</Filter>
-    </ClCompile>
     <ClCompile Include="src\logger.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\task_dispatcher.cpp">
-      <Filter>Core\task</Filter>
+    <ClCompile Include="src\msg_dispatcher.cpp">
+      <Filter>Core\msg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\msg_channel.cpp">
+      <Filter>Core\msg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +205,9 @@
     </None>
     <None Include="include\mem_rotative_buffer.inl">
       <Filter>Core\mem</Filter>
+    </None>
+    <None Include="include\msg_object.inl">
+      <Filter>Core\msg</Filter>
     </None>
   </ItemGroup>
 </Project>

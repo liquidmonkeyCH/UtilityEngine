@@ -33,19 +33,22 @@ public:
 
 int handler(msg::object_iface* obj, mem::message* _msg)
 {
-	unsigned long len = 0;
-	const char* p = _msg->next(len);
+	char buffer[MAX_PACKET_LEN + 1];
 	GameSession* session = dynamic_cast<GameSession*>(obj);
 
-	session->send(p, len);
-	return 0;
-	//Clog::info("recv msg: %s", p);
-	std::string str(p);
-	if (str.size() < MAX_PACKET_LEN/2 -10)
-		str += p;
+	net_size_t len = 0, size = 0;
+	while (true) {
+		const char* p = _msg->next(len);
+		if (!p) break;
 
-	
-	session->send(str.c_str(), str.size() + 1);
+		memcpy(buffer + size, p, len);
+		size += len;
+		len = 0;
+	}
+
+	Clog::info("recv msg: %s", buffer);
+	session->send(buffer, size);
+
 	return 0;
 }
 

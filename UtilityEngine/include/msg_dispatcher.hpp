@@ -7,7 +7,7 @@
 #define __MSG_DISPATCHER_HPP__
 
 #include "com_thread_pool.hpp"
-#include "msg_object.hpp"
+#include "msg_channel.hpp"
 
 namespace Utility
 {

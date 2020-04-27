@@ -68,6 +68,7 @@ public:
 private:
 	bool dispatch_obj(object_iface* obj)
 	{
+		channel_node::thread_id_guard guard(obj);
 		mem::message* message = obj->get_message();
 		message_t* msg = dynamic_cast<message_t*>(message);
 

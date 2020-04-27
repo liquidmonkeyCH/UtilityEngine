@@ -36,6 +36,8 @@ void channel::attach(channel_node* node)
 #ifndef NDEBUG
 	if (node->m_parent)
 		Clog::error_throw(errors::logic, "node already have channel!");
+	if(std::this_thread::get_id() != node->m_thread_id)
+		Clog::error_throw(errors::logic, "plase executes on its own thread!");
 #endif
 	node->m_parent = this;
 }
@@ -44,7 +46,7 @@ void channel::detach(channel_node* node)
 {
 #ifndef NDEBUG
 	if (node->m_parent != this)
-		Clog::error_throw(errors::logic, "node not belong to channel!");
+		Clog::error_throw(errors::logic, "node not belong to this channel!");
 #endif
 	node->m_parent = nullptr;
 }

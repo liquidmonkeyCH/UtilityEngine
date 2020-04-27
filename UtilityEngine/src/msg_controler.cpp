@@ -47,7 +47,6 @@ bool controler_iface::dispatch_channel(channel* p_channel)
 {
 	channel_node::thread_id_guard guard(p_channel);
 	channel_node* node = p_channel->front();
-	bool need_post = false;
 	if (node->m_is_channel ? dispatch_channel(dynamic_cast<channel*>(node))
 		: dispatch_obj(dynamic_cast<object_iface*>(node)))
 		return p_channel->post_node(node);

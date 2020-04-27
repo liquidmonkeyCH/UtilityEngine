@@ -72,7 +72,7 @@ public:
 	using message_t = pares_message_wrap;
 	template<class session_t, class handler_manager> friend class responder;
 	template<class session_t, class handler_manager> friend class requester;
-	static constexpr std::size_t MAX_MSG_PACKET_LEN = message_t::MAX_MSG_PACKET_LEN;
+	static constexpr std::size_t MAX_MSG_LEN = message_t::MAX_BLOCK_LEN;
 public:
 	session_wrap(void);
 	virtual ~session_wrap(void);

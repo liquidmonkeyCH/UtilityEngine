@@ -14,7 +14,7 @@ namespace Utility
 namespace mem
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t MAX_MESSAGE_LEN>
+template<std::size_t PER_BLOCK_LEN>
 class rotative_buffer : public buffer_iface
 {
 public:
@@ -27,7 +27,7 @@ public:
 	void clear(void);
 
 	//! Reg read operation
-	//! Param:(in-out)size [0~MAX_PACKET_LEN]
+	//! Param:(in-out)size [0~PER_BLOCK_LEN]
 	//! Always change member [m_lastread]
 	const char* read(net_size_t& size);
 	//! Commit read operation
@@ -35,7 +35,7 @@ public:
 	void commit_read(net_size_t size);
 
 	//! Reg write operation
-	//! Param:(in-out)size [0~MAX_PACKET_LEN]
+	//! Param:(in-out)size [0~PER_BLOCK_LEN]
 	char* write(net_size_t& size);
 	//! Returns: total writable size
 	net_size_t writable_size(void);
@@ -57,7 +57,8 @@ public:
 	// Backs up a number of bytes.
 	bool back_up(net_size_t size) override;
 
-	static constexpr std::size_t MAX_MSG_PACKET_LEN = MAX_MESSAGE_LEN;
+	static constexpr std::size_t MAX_MESSAGE_LEN = PER_BLOCK_LEN;
+	static constexpr std::size_t MAX_BLOCK_LEN = PER_BLOCK_LEN;
 private:
 	char*	m_buffer;
 	char*	m_reader;

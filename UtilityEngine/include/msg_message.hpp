@@ -23,7 +23,7 @@ public:
 	_message_impl(void) :m_size(0), m_good(true)
 	{
 		static_assert(MAX_MSG_LEN > 0, "MAX_MSG_LEN out of range!");
-		static_assert(MAX_MSG_LEN <= buffer_type::MAX_MSG_PACKET_LEN, "MAX_MSG_LEN out of bound!");
+		static_assert(MAX_MSG_LEN <= buffer_type::MAX_MESSAGE_LEN, "MAX_MSG_LEN out of bound!");
 	}
 	virtual ~_message_impl(void) = default;
 

@@ -43,7 +43,7 @@ void rotative_buffer<N>::clear(void)
 template<std::size_t N>
 void rotative_buffer<N>::init(std::size_t size)
 {
-	assert(size >= MAX_MSG_PACKET_LEN);
+	assert(size >= MAX_MESSAGE_LEN);
 	if (m_buffer != nullptr)
 	{
 		if (size == m_size)
@@ -52,8 +52,8 @@ void rotative_buffer<N>::init(std::size_t size)
 		delete[] m_buffer;
 	}
 
-	m_buffer = new char[size + MAX_MSG_PACKET_LEN + 1];
-	m_buffer[size + MAX_MSG_PACKET_LEN] = 0;
+	m_buffer = new char[size + MAX_MESSAGE_LEN + 1];
+	m_buffer[size + MAX_MESSAGE_LEN] = 0;
 	m_size = size;
 	clear();
 }
@@ -75,8 +75,8 @@ net_size_t rotative_buffer<N>::_readable_size(net_size_t exp)
 template<std::size_t N>
 const char* rotative_buffer<N>::read(net_size_t& size)
 {
-	if (size > MAX_MSG_PACKET_LEN || size == 0)
-		size = MAX_MSG_PACKET_LEN;
+	if (size > MAX_MESSAGE_LEN || size == 0)
+		size = MAX_MESSAGE_LEN;
 
 	std::lock_guard<std::mutex> lock(this->m_mutex);
 	//! ¡ý******¡ý*******************¡ý******¡ý**********¡ý
@@ -145,8 +145,8 @@ net_size_t rotative_buffer<N>::writable_size(void)
 template<std::size_t N>
 char* rotative_buffer<N>::write(net_size_t& size)
 {
-	if (size > MAX_MSG_PACKET_LEN || size == 0)
-		size = MAX_MSG_PACKET_LEN;
+	if (size > MAX_MESSAGE_LEN || size == 0)
+		size = MAX_MESSAGE_LEN;
 
 	std::lock_guard<std::mutex> lock(this->m_mutex);
 	//!	|   len	  |                   |    size     |

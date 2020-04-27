@@ -21,7 +21,7 @@
 
 using namespace Utility;
 
-class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::comfirmer<mem::rotative_buffer<MAX_PACKET_LEN>, MAX_PACKET_LEN> >
+class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::comfirmer<mem::stream_buffer<MAX_PACKET_LEN>, MAX_PACKET_LEN> >
 {
 public:
 	void on_connect(void)
@@ -57,8 +57,8 @@ class NetClient : public net::requester <GameSession, msg::handler_manager_deque
 public:
 	void on_start(void)
 	{
-		m_recv_buffer_size = 2 * GameSession::MAX_MSG_PACKET_LEN;
-		m_send_buffer_size = 2 * GameSession::MAX_MSG_PACKET_LEN;
+		m_recv_buffer_size = 10 * MAX_PACKET_LEN;
+		m_send_buffer_size = 10 * MAX_PACKET_LEN;
 		m_controler.attach(handler);
 	}
 };

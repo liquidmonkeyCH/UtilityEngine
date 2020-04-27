@@ -6,7 +6,6 @@
 #ifndef __MSG_CHANNEL_HPP__
 #define __MSG_CHANNEL_HPP__
 
-#include "msg_object.hpp"
 #include "logger.hpp"
 
 namespace Utility
@@ -15,45 +14,42 @@ namespace Utility
 namespace msg
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class dispatcher;
+class channel;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class channel_node : public object_iface
+class channel_node
 {
 public:
 	friend class channel;
-	template<class message_wrap, class handler_manager> friend class controler_wrap;
+	friend class controler_iface;
 
-	channel_node(void) :m_posting(false), m_prev(nullptr), m_next(nullptr), m_parent(nullptr) {}
+	channel_node(void) = delete;
+	channel_node(bool flag) :m_is_channel(flag), m_prev(nullptr), m_next(nullptr), m_parent(nullptr) {}
 	virtual ~channel_node(void) { clear(); }
-
-	virtual void post_message(dispatcher* _dispatcher, bool good);
 protected:
 	void clear(void);
-	virtual bool post_node(channel_node* node) { return false; }
 protected:
-	bool m_posting;
+	const bool m_is_channel;
 	channel_node* m_prev;
 	channel_node* m_next;
-	channel_node* m_parent;
+	channel* m_parent;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class channel 
+class channel : public channel_node
 {
 public:
 	channel(void);
-	~channel(void);
+	virtual ~channel(void);
 public:
 	void attach(channel_node* node);
 	void detach(channel_node* node);
 
 	bool post_node(channel_node* node);
-	channel_node* pop_post(void);
+	channel_node* front(void);
+	bool pop_front(void);
 private:
-	std::mutex m_post_lock;
-	std::mutex m_wait_lock;
+	std::mutex m_mutex;
 	channel_node* m_post_root;
 	channel_node* m_post_tail;
-	channel_node* m_wait_root;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace task

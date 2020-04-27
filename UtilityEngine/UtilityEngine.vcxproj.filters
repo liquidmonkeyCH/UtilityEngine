@@ -186,6 +186,9 @@
     <ClCompile Include="src\msg_channel.cpp">
       <Filter>Core\msg</Filter>
     </ClCompile>
+    <ClCompile Include="src\msg_controler.cpp">
+      <Filter>Core\msg</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\mem_data_factory.inl">

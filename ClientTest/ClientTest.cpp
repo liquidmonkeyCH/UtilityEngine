@@ -31,9 +31,8 @@ public:
 };
 
 
-int handler(msg::object_iface* obj, mem::message* _msg, void* ptr)
+int handler(msg::object_iface* obj, mem::message* _msg)
 {
-	(void)ptr;
 	unsigned long len = 0;
 	const char* p = _msg->next(len);
 	GameSession* session = dynamic_cast<GameSession*>(obj);

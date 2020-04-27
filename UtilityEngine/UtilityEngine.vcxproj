@@ -173,6 +173,7 @@
     <ClCompile Include="src\com_md5.cpp" />
     <ClCompile Include="src\logger.cpp" />
     <ClCompile Include="src\msg_channel.cpp" />
+    <ClCompile Include="src\msg_controler.cpp" />
     <ClCompile Include="src\net_framework.cpp" />
     <ClCompile Include="src\net_io_service.cpp" />
     <ClCompile Include="src\net_io_service_epoll.cpp" />

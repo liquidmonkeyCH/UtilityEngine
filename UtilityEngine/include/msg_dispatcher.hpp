@@ -22,12 +22,8 @@ class dispatcher
 public:
 	struct task_info
 	{
+		channel_node* m_obj;
 		controler_iface* m_controler;
-		object_iface* m_obj;
-		mem::message* m_message;
-		void* m_userdata;
-		bool m_good;
-
 		void run(void);
 	};
 public:

@@ -31,7 +31,7 @@ public:
 	static void net_free(void);
 protected:
 	virtual void on_close_session(session_iface* session) = 0;
-	virtual void post_request(session_iface* session, void* ptr) = 0;
+	virtual void post_request(session_iface* session, mem::message* message) = 0;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace net

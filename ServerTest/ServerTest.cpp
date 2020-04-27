@@ -30,9 +30,8 @@ public:
 };
 
 std::atomic<std::uint64_t> total_msg(0);
-int handler(msg::object_iface* obj, mem::message* _msg, void* ptr)
+int handler(msg::object_iface* obj, mem::message* _msg)
 {
-	(void)ptr;
 	++total_msg;
 	char buffer[MAX_PACKET_LEN + 1];
 	GameSession* session = dynamic_cast<GameSession*>(obj);

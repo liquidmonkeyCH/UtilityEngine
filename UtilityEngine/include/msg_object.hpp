@@ -11,6 +11,7 @@
 #include <mutex>
 
 #include "mem_message.hpp"
+#include "msg_channel.hpp"
 
 namespace Utility
 {
@@ -20,10 +21,10 @@ namespace msg
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 class dispatcher;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class object_iface
+class object_iface : public channel_node
 {
 public:
-	object_iface(void) = default;
+	object_iface(void) : channel_node(false) {};
 	virtual ~object_iface(void) = default;
 
 	object_iface(const object_iface&) = delete;
@@ -31,9 +32,7 @@ public:
 
 	virtual void handle_error(void) = 0;
 	virtual void do_close(void) = 0;
-
-	virtual void post_message(dispatcher* _dispatcher, bool is_dipatcher);
-	virtual mem::message* get_message(object_iface* obj) = 0;
+	virtual mem::message* get_message(void) = 0;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class message_t>

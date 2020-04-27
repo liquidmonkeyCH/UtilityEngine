@@ -26,6 +26,7 @@ session_iface::session_iface(void)
 , m_parent(nullptr)
 , m_state({ static_cast<int>(state::none) })
 , m_socket(nullptr)
+, m_close_reason(reason::cs_none)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,10 +49,11 @@ session_iface::close(reason st)
 	if (!m_state.compare_exchange_strong(exp, static_cast<int>(state::closing)))
 		return;
 
+	m_close_reason = st;
 	m_io_service->untrack_session(this);
 	m_socket->close();
 	m_state = static_cast<int>(state::none);
-	process_close(st);
+	process_close();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void 

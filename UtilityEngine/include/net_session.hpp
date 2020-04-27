@@ -22,6 +22,7 @@ class session_iface : public msg::object_iface
 {
 public:
 	enum class reason : std::uint32_t {
+		cs_none,
 		cs_service_stop,
 		cs_connect_timeout,
 		cs_connect_peer_close,
@@ -49,7 +50,7 @@ protected:
 	virtual void clear(void) = 0;
 	virtual bool process_recv(net_size_t size) = 0;
 	virtual bool process_send(net_size_t size) = 0;
-	virtual void process_close(reason) = 0;
+	virtual void process_close(void) = 0;
 protected:
 	io_service_iface* m_io_service;
 	framework* m_parent;
@@ -59,6 +60,8 @@ protected:
 
 	per_io_data m_recv_data;
 	per_io_data m_send_data;
+
+	reason m_close_reason;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<socket_type st, class pares_message_wrap>
@@ -77,7 +80,7 @@ protected:
 	void init_buffer(std::size_t recv_buffer_size, std::size_t send_buffer_size);
 
 	void clear(void);
-	void do_close(void*);
+	void do_close(void);
 	mem::message* get_message(void) { return &m_recv_buffer; }
 
 	virtual void on_close(reason){}
@@ -85,7 +88,7 @@ protected:
 
 	bool process_recv(net_size_t size);
 	bool process_send(net_size_t size);
-	void process_close(reason);
+	void process_close(void);
 protected:
 	bool send_check(net_size_t size);
 	void post_send(bool flag);

@@ -29,6 +29,8 @@ void session_wrap<st, pares_message_wrap>::init_buffer(std::size_t recv_buffer_s
 template<socket_type st, class pares_message_wrap>
 void session_wrap<st, pares_message_wrap>::clear(void)
 {
+	this->m_close_reason = reason::cs_none;
+
 	m_recv_buffer.clear();
 	m_send_buffer.clear();
 
@@ -37,9 +39,9 @@ void session_wrap<st, pares_message_wrap>::clear(void)
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<socket_type st, class pares_message_wrap>
-void session_wrap<st, pares_message_wrap>::do_close(void* ptr)
+void session_wrap<st, pares_message_wrap>::do_close(void)
 {
-	on_close((reason)(ptrdiff_t)ptr);
+	on_close(this->m_close_reason);
 	m_parent->on_close_session(this);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,10 +64,10 @@ bool session_wrap<st, pares_message_wrap>::process_send(net_size_t size)
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<socket_type st, class pares_message_wrap>
-void session_wrap<st, pares_message_wrap>::process_close(reason close_reason)
+void session_wrap<st, pares_message_wrap>::process_close(void)
 {
-	if(m_recv_buffer.go_bad(close_reason))
-		m_parent->post_request(this, (void*)close_reason);
+	if(m_recv_buffer.go_bad())
+		m_parent->post_request(this, &m_recv_buffer);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<socket_type st, class pares_message_wrap>
@@ -75,7 +77,7 @@ bool session_wrap<st, pares_message_wrap>::process_recv(net_size_t size)
 		return false;
 
 	if (m_recv_buffer.commit_recv(size))
-		m_parent->post_request(this, nullptr);
+		m_parent->post_request(this, &m_recv_buffer);
 
 	m_recv_data.m_buffer.len = MAX_MSG_PACKET_LEN;
 	m_recv_data.m_buffer.buf = m_recv_buffer.write(m_recv_data.m_buffer.len);

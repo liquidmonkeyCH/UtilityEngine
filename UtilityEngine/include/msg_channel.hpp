@@ -29,6 +29,7 @@ public:
 	virtual ~channel_node(void) { clear(); }
 protected:
 	void clear(void);
+	void leave_channel(void);
 	struct thread_id_guard
 	{
 		thread_id_guard(channel_node* node) :m_node(node) { 
@@ -52,10 +53,12 @@ class channel : public channel_node
 public:
 	channel(void);
 	virtual ~channel(void);
+	
+	friend class controler_iface;
 public:
 	void attach(channel_node* node);
 	void detach(channel_node* node);
-
+private:
 	bool post_node(channel_node* node);
 	channel_node* front(void);
 	bool pop_front(void);

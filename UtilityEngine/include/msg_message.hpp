@@ -11,6 +11,12 @@
 namespace Utility
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+namespace net 
+{ 
+	enum class socket_type; 
+	template<net::socket_type st, class pares_message_wrap> class session_wrap;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 namespace msg
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,6 +33,9 @@ public:
 	}
 	virtual ~_message_impl(void) = default;
 
+	template<class message_wrap, class handler_manager> friend class controler_wrap;
+	template<net::socket_type st, class pares_message_wrap> friend class net::session_wrap;
+protected:
 	void commit(void)
 	{
 		this->commit_read(m_size);

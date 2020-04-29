@@ -42,6 +42,7 @@ template<socket_type st, class pares_message_wrap>
 void session_wrap<st, pares_message_wrap>::do_close(void)
 {
 	on_close(this->m_close_reason);
+	this->leave_channel();
 	m_parent->on_close_session(this);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

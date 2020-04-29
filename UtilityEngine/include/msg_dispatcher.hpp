@@ -26,6 +26,7 @@ public:
 		controler_iface* m_controler;
 		void run(void);
 	};
+	friend class controler_iface;
 public:
 	dispatcher(void);
 	~dispatcher(void);
@@ -35,6 +36,7 @@ public:
 
 	void start(std::uint32_t nworker);
 	void stop(void);
+private:
 	void dispatch(task_info&& _task);
 private:
 	com::task_threadpool<task_info> m_workers;

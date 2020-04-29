@@ -20,6 +20,12 @@ void channel_node::clear(void)
 	m_parent = nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+void channel_node::leave_channel(void)
+{
+	if (m_parent)
+		m_parent->detach(this);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 channel::channel(void)
 : channel_node(true)
 , m_post_root(nullptr)
@@ -38,6 +44,8 @@ void channel::attach(channel_node* node)
 		Clog::error_throw(errors::logic, "node already have channel!");
 	if(std::this_thread::get_id() != node->m_thread_id)
 		Clog::error_throw(errors::logic, "plase executes on its own thread!");
+	if(node == this)
+		Clog::error_throw(errors::logic, "can not attach self!");
 #endif
 	node->m_parent = this;
 }
@@ -72,7 +80,7 @@ bool channel::post_node(channel_node* node)
 		return true;
 	}
 
-	// 新进节点(由io线程投递)
+	// 新进节点
 	node->m_prev = m_post_tail;
 	node->m_next = nullptr;
 	m_post_tail ? m_post_tail->m_next = node : m_post_root = node;

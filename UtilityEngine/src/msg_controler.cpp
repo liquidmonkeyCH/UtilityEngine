@@ -38,9 +38,9 @@ void controler_iface::post_node(channel_node* node)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void controler_iface::dispatch_node(channel_node* node)
 {
-	if (node->m_is_channel ? dispatch_channel(dynamic_cast<channel*>(node)) 
+	if (node->m_is_channel ? dispatch_channel(dynamic_cast<channel*>(node))
 		: dispatch_obj(dynamic_cast<object_iface*>(node)))
-		m_dispatcher->dispatch({ node,this });
+		post_node(node);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 bool controler_iface::dispatch_channel(channel* p_channel)
@@ -49,8 +49,12 @@ bool controler_iface::dispatch_channel(channel* p_channel)
 	channel_node* node = p_channel->front();
 	if (node->m_is_channel ? dispatch_channel(dynamic_cast<channel*>(node))
 		: dispatch_obj(dynamic_cast<object_iface*>(node)))
-		return p_channel->post_node(node);
-	
+	{ 
+		if(p_channel == node->m_parent)
+			return p_channel->post_node(node);
+		else
+			post_node(node);
+	}
 	return p_channel->pop_front();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

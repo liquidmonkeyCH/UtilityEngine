@@ -30,7 +30,6 @@ public:
 	}
 };
 
-
 int handler(msg::object_iface* obj, mem::message* _msg)
 {
 	char buffer[MAX_PACKET_LEN + 1];
@@ -61,6 +60,8 @@ public:
 		m_send_buffer_size = 10 * MAX_PACKET_LEN;
 		m_controler.attach(handler);
 	}
+
+	msg::channel m_channel;
 };
 
 int main(void)

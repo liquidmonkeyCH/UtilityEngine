@@ -68,6 +68,8 @@ private:
 protected:
 	virtual void on_start(void){}
 	virtual void on_stop(void){}
+	virtual bool on_accept(void) { return true; }
+	virtual void on_disconnect(void) {}
 protected:
 	sokcet_mode						m_socket_impl;
 	mem::data_factory<session_t>	m_session_pool;

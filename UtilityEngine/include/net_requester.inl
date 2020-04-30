@@ -42,7 +42,6 @@ bool requester<session_t, handler_manager>::connect(const char* host, std::uint3
 	try{
 		if (m_session.m_socket->connect(host, port, timeout_msecs)){
 			m_session.set_connected(this,INVALID_SOCKET, nullptr);
-			m_session.on_connect();
 			m_session.init_buffer(m_recv_buffer_size, m_send_buffer_size);
 			m_session.m_socket->set_blocking(false);
 			m_io_service->track_session(&m_session);

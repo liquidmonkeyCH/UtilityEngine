@@ -84,7 +84,6 @@ protected:
 	mem::message* get_message(void) { return &m_recv_buffer; }
 
 	virtual void on_close(reason){}
-	virtual void on_connect(void){}
 
 	bool process_recv(net_size_t size);
 	bool process_send(net_size_t size);

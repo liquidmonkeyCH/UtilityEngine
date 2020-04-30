@@ -88,6 +88,13 @@ session_t* responder<session_t, handler_manager>::get_session(void)
 template<class session_t, class handler_manager>
 void responder<session_t, handler_manager>::process_accept(per_io_data* data, sockaddr_storage* addr, session_iface** se)
 {
+	if (!on_accept())
+	{
+		m_socket->close_fd(data->m_fd);
+		*se = nullptr;
+		return;
+	}
+
 	session_t* session = get_session();
 	if (!session)
 	{
@@ -96,7 +103,6 @@ void responder<session_t, handler_manager>::process_accept(per_io_data* data, so
 	else
 	{
 		session->set_connected(this,data->m_fd, addr);
-		session->on_connect();
 		session->init_buffer(m_recv_buffer_size, m_send_buffer_size);
 		session->m_socket->set_blocking(false);
 	}
@@ -115,6 +121,7 @@ void responder<session_t, handler_manager>::on_close_session(session_iface* sess
 	std::lock_guard<std::mutex> lock(m_session_mutex);
 	m_session_pool.free(dynamic_cast<session_t*>(session));
 
+	on_disconnect();
 	if (!m_running && m_session_pool.used() == 0)
 		m_can_stop.set_value(true);
 }

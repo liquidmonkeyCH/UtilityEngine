@@ -11,7 +11,6 @@
 #include <assert.h>
 #include <string.h>
 #include <cstddef>
-#define MAX_PACKET_LEN 4096
 
 #ifdef _WIN32
 using net_size_t = unsigned long;

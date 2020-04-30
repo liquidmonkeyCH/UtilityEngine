@@ -16,7 +16,7 @@ namespace Utility
 namespace mem
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t PER_BLOCK_LEN>
+template<std::size_t block_size>
 class stream_buffer : public mem::buffer_iface
 {
 public:
@@ -29,7 +29,7 @@ public:
 	void clear(void);
 
 	//! Reg read operation
-	//! Param:(in-out)size [0~PER_BLOCK_LEN]
+	//! Param:(in-out)size [0~block_size]
 	//! Always change member [m_lastread]
 	const char* read(net_size_t& size);
 	//! Commit read operation
@@ -37,7 +37,7 @@ public:
 	void commit_read(net_size_t size);
 
 	//! Reg write operation
-	//! Param:(in-out)size [0~PER_BLOCK_LEN]
+	//! Param:(in-out)size [0~block_size]
 	char* write(net_size_t& size);
 	//! Returns: total writable size
 	net_size_t writable_size(void);
@@ -64,10 +64,10 @@ public:
 private:
 	const char* _next(net_size_t& size, net_size_t limit);
 public:
-	using stream_node_t = stream_node<PER_BLOCK_LEN>;
+	using stream_node_t = stream_node<block_size>;
 	using factory_t = mem::data_factory_ex<stream_node_t, 0, mem::factory_cache_type::DYNAMIC>;
 	static constexpr std::size_t MAX_MESSAGE_LEN = ULONG_MAX;
-	static constexpr std::size_t MAX_BLOCK_LEN = PER_BLOCK_LEN;
+	static constexpr std::size_t BLOCK_SIZE = block_size;
 private:
 	stream_node_t*	m_head;
 	stream_node_t*	m_tail;

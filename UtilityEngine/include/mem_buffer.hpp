@@ -27,7 +27,7 @@ public:
 	virtual void clear(void) = 0;
 
 	//! Reg read operation
-	//! Param:(in-out)size [0~MAX_PACKET_LEN]
+	//! Param:(in-out)size [0~block_size]
 	//! Always change member [m_lastread]
 	virtual const char* read(net_size_t& size) = 0;
 	//! Commit read operation
@@ -35,7 +35,7 @@ public:
 	virtual void commit_read(net_size_t size) = 0;
 
 	//! Reg write operation
-	//! Param:(in-out)size [0~MAX_PACKET_LEN]
+	//! Param:(in-out)size [0~block_size]
 	virtual char* write(net_size_t& size) = 0;
 	//! Returns: total writable size
 	virtual net_size_t writable_size(void) = 0;

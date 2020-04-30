@@ -5,8 +5,8 @@
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-rotative_buffer<N>::rotative_buffer(void)
+template<std::size_t block_size>
+rotative_buffer<block_size>::rotative_buffer(void)
 	: m_buffer(nullptr)
 	, m_reader(nullptr)
 	, m_writer(nullptr)
@@ -20,15 +20,15 @@ rotative_buffer<N>::rotative_buffer(void)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-rotative_buffer<N>::~rotative_buffer(void)
+template<std::size_tblock_size>
+rotative_buffer<block_size>::~rotative_buffer(void)
 {
 	delete[] m_buffer;
 	m_buffer = nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-void rotative_buffer<N>::clear(void)
+template<std::size_t block_size>
+void rotative_buffer<block_size>::clear(void)
 {
 	m_lastcopy = 0;
 	m_lastread = 0;
@@ -40,10 +40,10 @@ void rotative_buffer<N>::clear(void)
 #endif
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-void rotative_buffer<N>::init(std::size_t size)
+template<std::size_t block_size>
+void rotative_buffer<block_size>::init(std::size_t size)
 {
-	assert(size >= MAX_MESSAGE_LEN);
+	assert(size >= BLOCK_SIZE);
 	if (m_buffer != nullptr)
 	{
 		if (size == m_size)
@@ -52,14 +52,14 @@ void rotative_buffer<N>::init(std::size_t size)
 		delete[] m_buffer;
 	}
 
-	m_buffer = new char[size + MAX_MESSAGE_LEN + 1];
-	m_buffer[size + MAX_MESSAGE_LEN] = 0;
+	m_buffer = new char[size + block_size + 1];
+	m_buffer[size + block_size] = 0;
 	m_size = size;
 	clear();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-net_size_t rotative_buffer<N>::_readable_size(net_size_t exp)
+template<std::size_t block_size>
+net_size_t rotative_buffer<block_size>::_readable_size(net_size_t exp)
 {
 	//! ¡ý******¡ý*******************¡ý******¡ý**********¡ý
 	//! head reader             writer  final       tail
@@ -72,11 +72,11 @@ net_size_t rotative_buffer<N>::_readable_size(net_size_t exp)
 	//! head     writer            reader  final       tail
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-const char* rotative_buffer<N>::read(net_size_t& size)
+template<std::size_t block_size>
+const char* rotative_buffer<block_size>::read(net_size_t& size)
 {
-	if (size > MAX_MESSAGE_LEN || size == 0)
-		size = MAX_MESSAGE_LEN;
+	if (size > block_size || size == 0)
+		size = block_size;
 
 	std::lock_guard<std::mutex> lock(this->m_mutex);
 	//! ¡ý******¡ý*******************¡ý******¡ý**********¡ý
@@ -113,8 +113,8 @@ const char* rotative_buffer<N>::read(net_size_t& size)
 	return m_reader;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-void rotative_buffer<N>::commit_read(net_size_t size)
+template<std::size_t block_size>
+void rotative_buffer<block_size>::commit_read(net_size_t size)
 {
 	assert(size <= m_lastread);
 	std::lock_guard<std::mutex> lock(this->m_mutex);
@@ -129,8 +129,8 @@ void rotative_buffer<N>::commit_read(net_size_t size)
 	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-net_size_t rotative_buffer<N>::writable_size(void)
+template<std::size_t block_size>
+net_size_t rotative_buffer<block_size>::writable_size(void)
 {
 	std::lock_guard<std::mutex> lock(this->m_mutex);
 	//! ¡ý******¡ý*******************¡ý******¡ý**********¡ý
@@ -142,11 +142,11 @@ net_size_t rotative_buffer<N>::writable_size(void)
 	//! head    reader             writer  final       tail
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-char* rotative_buffer<N>::write(net_size_t& size)
+template<std::size_t block_size>
+char* rotative_buffer<block_size>::write(net_size_t& size)
 {
-	if (size > MAX_MESSAGE_LEN || size == 0)
-		size = MAX_MESSAGE_LEN;
+	if (size > block_size || size == 0)
+		size = block_size;
 
 	std::lock_guard<std::mutex> lock(this->m_mutex);
 	//!	|   len	  |                   |    size     |
@@ -164,8 +164,8 @@ char* rotative_buffer<N>::write(net_size_t& size)
 	//! head   writer      reader final      tail
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-bool rotative_buffer<N>::_commit_write(net_size_t size)
+template<std::size_t block_size>
+bool rotative_buffer<block_size>::_commit_write(net_size_t size)
 {
 #ifndef NDEBUG
 	assert(m_last_malloc >= size);
@@ -190,8 +190,8 @@ bool rotative_buffer<N>::_commit_write(net_size_t size)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // **** message iface
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-const char* rotative_buffer<N>::next(net_size_t& size)
+template<std::size_t block_size>
+const char* rotative_buffer<block_size>::next(net_size_t& size)
 {
 	net_size_t limit = m_limit > 0 ? m_limit : readable_size(0);
 	assert(m_limit <= limit);
@@ -213,8 +213,8 @@ const char* rotative_buffer<N>::next(net_size_t& size)
 	return read(limit) + left;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-bool rotative_buffer<N>::skip(net_size_t size)
+template<std::size_t block_size>
+bool rotative_buffer<block_size>::skip(net_size_t size)
 {
 	net_size_t limit = m_limit > 0 ? m_limit : readable_size(0);
 	assert(m_limit <= limit);
@@ -231,8 +231,8 @@ bool rotative_buffer<N>::skip(net_size_t size)
 	return true;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t N>
-bool rotative_buffer<N>::back_up(net_size_t size)
+template<std::size_t block_size>
+bool rotative_buffer<block_size>::back_up(net_size_t size)
 {
 	if (size > m_position)
 		return false;

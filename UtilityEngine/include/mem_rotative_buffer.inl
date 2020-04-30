@@ -20,7 +20,7 @@ rotative_buffer<block_size>::rotative_buffer(void)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_tblock_size>
+template<std::size_t block_size>
 rotative_buffer<block_size>::~rotative_buffer(void)
 {
 	delete[] m_buffer;
@@ -43,7 +43,7 @@ void rotative_buffer<block_size>::clear(void)
 template<std::size_t block_size>
 void rotative_buffer<block_size>::init(std::size_t size)
 {
-	assert(size >= BLOCK_SIZE);
+	assert(size >= block_size);
 	if (m_buffer != nullptr)
 	{
 		if (size == m_size)

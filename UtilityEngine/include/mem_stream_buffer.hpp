@@ -66,8 +66,8 @@ private:
 public:
 	using stream_node_t = stream_node<block_size>;
 	using factory_t = mem::data_factory_ex<stream_node_t, 0, mem::factory_cache_type::DYNAMIC>;
-	static constexpr std::size_t MAX_MESSAGE_LEN = ULONG_MAX;
-	static constexpr std::size_t BLOCK_SIZE = block_size;
+	static constexpr std::size_t max_message_len = ULONG_MAX;
+	static constexpr std::size_t pre_block_size = block_size;
 private:
 	stream_node_t*	m_head;
 	stream_node_t*	m_tail;

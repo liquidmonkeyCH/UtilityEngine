@@ -22,14 +22,14 @@ namespace msg
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 enum class state { ok, pending, error, bad };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class buffer_type, net_size_t MAX_MSG_LEN>
+template<class buffer_type, net_size_t max_message_len>
 class _message_impl : public buffer_type
 {
 public:
 	_message_impl(void) :m_size(0), m_good(true)
 	{
-		static_assert(MAX_MSG_LEN > 0, "MAX_MSG_LEN out of range!");
-		static_assert(MAX_MSG_LEN <= buffer_type::MAX_MESSAGE_LEN, "MAX_MSG_LEN out of bound!");
+		static_assert(max_message_len > 0, "max_message_len out of range!");
+		static_assert(max_message_len <= buffer_type::max_message_len, "max_message_len out of bound!");
 	}
 	virtual ~_message_impl(void) = default;
 

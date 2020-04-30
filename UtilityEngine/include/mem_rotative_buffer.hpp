@@ -14,7 +14,7 @@ namespace Utility
 namespace mem
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<std::size_t PER_BLOCK_LEN>
+template<std::size_t block_size>
 class rotative_buffer : public buffer_iface
 {
 public:
@@ -57,8 +57,8 @@ public:
 	// Backs up a number of bytes.
 	bool back_up(net_size_t size) override;
 
-	static constexpr std::size_t MAX_MESSAGE_LEN = PER_BLOCK_LEN;
-	static constexpr std::size_t MAX_BLOCK_LEN = PER_BLOCK_LEN;
+	static constexpr std::size_t max_message_len = block_size;
+	static constexpr std::size_t pre_block_size = block_size;
 private:
 	char*	m_buffer;
 	char*	m_reader;

@@ -19,6 +19,7 @@
 
 #include "com_service_manager.hpp"
 
+#define MAX_PACKET_LEN 4096
 using namespace Utility;
 
 class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::comfirmer<mem::stream_buffer<MAX_PACKET_LEN>, MAX_PACKET_LEN> >

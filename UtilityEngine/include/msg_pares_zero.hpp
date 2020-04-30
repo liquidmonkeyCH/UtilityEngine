@@ -17,15 +17,15 @@ namespace msg
 namespace pares_zero
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class buffer_type, net_size_t MAX_MSG_LEN>
-class comfirmer : public _message_impl<buffer_type, MAX_MSG_LEN>
+template<class buffer_type, net_size_t max_message_len>
+class comfirmer : public _message_impl<buffer_type, max_message_len>
 {
 public:
 	using buffer_t = buffer_type;
 
 	comfirmer(void)
 	{
-		static_assert(MAX_MSG_LEN > sizeof(std::uint32_t), "MAX_MSG_LEN out of range!");
+		static_assert(max_message_len > sizeof(std::uint32_t), "max_message_len out of range!");
 	}
 	virtual ~comfirmer(void) = default;
 	template<class message_wrap, class handler_manager> friend class controler_wrap;
@@ -54,7 +54,7 @@ private:
 				if (size <= len)
 				{
 					this->m_size += size;
-					if (this->m_size > MAX_MSG_LEN)
+					if (this->m_size > max_message_len)
 						return state::error;
 
 					this->set_read_limit(this->m_size);
@@ -65,7 +65,7 @@ private:
 
 				this->m_size += len;
 
-				if (this->m_size > MAX_MSG_LEN)
+				if (this->m_size > max_message_len)
 					return state::error;
 
 			} while (true);

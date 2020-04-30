@@ -75,8 +75,8 @@ protected:
 	mem::data_factory<session_t>	m_session_pool;
 	std::mutex						m_session_mutex;
 	//! for session
-	std::size_t			m_recv_buffer_size = message_t::MAX_BLOCK_LEN * 10;
-	std::size_t			m_send_buffer_size = message_t::MAX_BLOCK_LEN * 10;
+	std::size_t			m_recv_buffer_size = message_t::pre_block_size * 10;
+	std::size_t			m_send_buffer_size = message_t::pre_block_size * 10;
 	//! for hanlder
 	msg::controler_wrap< message_t, handler_manager> m_controler;
 };

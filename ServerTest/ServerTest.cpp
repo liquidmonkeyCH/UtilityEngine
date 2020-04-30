@@ -16,6 +16,8 @@
 #include "msg_handler_manager_deque.hpp"
 #include "msg_dispatcher.hpp"
 
+#define MAX_PACKET_LEN 4096
+
 using namespace Utility;
 class GameSession : public net::session_wrap < net::socket_type::tcp, msg::pares_zero::comfirmer<mem::rotative_buffer<MAX_PACKET_LEN>,MAX_PACKET_LEN>>
 {

@@ -20,16 +20,23 @@ namespace Singleton_Test
 
 	struct SingletonTest : public com::iface::Singleton<SingletonTest>
 	{
-		SingletonTest()
-		{
-			Clog::debug("SingletonTest create!");
-		}
-
+		DECLARE_SINGLETON(SingletonTest)
+		
+	public:
 		void init()
 		{
 			Clog::debug("SingletonTest call init");
 		}
 	};
+
+	SingletonTest::SingletonTest()
+	{
+		Clog::debug("SingletonTest create!");
+	}
+	SingletonTest::~SingletonTest()
+	{
+		Clog::debug("SingletonTest destory!");
+	}
 }
 using namespace Singleton_Test;
 template<class T>

@@ -8,7 +8,7 @@
 #define __COM_PROTOBUF_HPP__
 
 #include "google/protobuf/message.h"
-#include "msg_message.hpp"
+#include "mem_buffer.hpp"
 #include "net_session.hpp"
 
 namespace Utility
@@ -98,23 +98,18 @@ private:
 template<net::socket_type st, class pares_message_wrap>
 class protobuf_session : public net::session_wrap<st, pares_message_wrap>
 {
-public:
+protected:
 	template<class T>
-	bool send(const T& data)
+	bool send_packet(const T& data)
 	{
 		static_assert(std::is_base_of<google::protobuf::Message, T>::value,"data mast be google::protobuf::Message");
-		if (!this->send_check(data.ByteSizeLong()))
-			return false;
+		UTILITY_NET_SESSION_SEND_BEGIN(data.ByteSizeLong() + sizeof(std::uint32_t)*2);
 
 		_impl::protobuf_ostream kStream(&this->m_send_buffer);
 		data.SerializeToZeroCopyStream(&kStream);
 
-		this->post_send(kStream.need_send());
+		UTILITY_NET_SESSION_SEND_END(kStream.need_send());
 		return true;
-	}
-	inline bool send(const char* package, size_t size)
-	{
-		return net::session_wrap<st, pares_message_wrap>::send(package, size);
 	}
 };
 ///////////////////////////////////////////////////////////////////////////////////////////////////

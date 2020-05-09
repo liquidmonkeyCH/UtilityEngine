@@ -10,7 +10,7 @@ void thread_echo(int n)
 		if (n % 2 == 0)
 		{
 			std::this_thread::yield();
-			Clog::warn("%d,%lld",n,std::this_thread::get_id());
+			Clog::warn("%d,%08X",n,std::this_thread::get_id());
 			continue;
 		}
 		std::this_thread::yield();

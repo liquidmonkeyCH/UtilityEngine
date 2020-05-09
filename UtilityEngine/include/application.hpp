@@ -52,7 +52,7 @@ protected:
 	virtual void OnStop(void) = 0;
 private:
 	void daemon(void);
-	void setsignal(void);
+	static void setsignal(void);
 	static controler* get_controler(void);
 private:
 	param_list				m_param_list;

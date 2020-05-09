@@ -18,6 +18,7 @@
 #include "msg_dispatcher.hpp"
 
 #include "com_service_manager.hpp"
+#include "com_protobuf.hpp"
 
 #define MAX_PACKET_LEN 4096
 using namespace Utility;

@@ -93,44 +93,9 @@ bool session_wrap<st, pares_message_wrap>::process_recv(net_size_t size)
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<socket_type st, class pares_message_wrap>
-bool session_wrap<st, pares_message_wrap>::send_check(net_size_t size)
-{
-	if (m_state != static_cast<int>(state::connected))
-		return false;
-
-	m_send_mutex.lock();
-
-	if (m_send_buffer.writable_size() < size)
-	{
-		// buffer overflow 
-		close(reason::cs_send_buffer_overflow);
-		m_send_mutex.unlock();
-		return false;
-	}
-
-	return true;
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-template<socket_type st, class pares_message_wrap>
-void session_wrap<st, pares_message_wrap>::post_send(bool flag)
-{
-	if (flag)
-	{
-		m_send_data.m_buffer.len = MAX_MSG_LEN;
-		m_send_data.m_buffer.buf = const_cast<char*>(m_send_buffer.read(m_send_data.m_buffer.len));
-
-		if (m_state == static_cast<int>(state::connected))
-			m_io_service->post_send_event(&m_send_data);
-	}
-	m_send_mutex.unlock();
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-template<socket_type st, class pares_message_wrap>
 bool session_wrap<st, pares_message_wrap>::send(const char* packet, net_size_t size)
 {
-	if (!send_check(size)) 
-		return false;
-
+	UTILITY_NET_SESSION_SEND_BEGIN(size);
 	char* p = nullptr;
 	net_size_t left = size;
 	bool b_send = false;
@@ -143,7 +108,7 @@ bool session_wrap<st, pares_message_wrap>::send(const char* packet, net_size_t s
 		left -= size;
 	} while (left != 0);
 
-	post_send(b_send);
+	UTILITY_NET_SESSION_SEND_END(b_send);
 	return true;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

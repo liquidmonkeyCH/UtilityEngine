@@ -88,9 +88,6 @@ protected:
 	bool process_recv(net_size_t size);
 	bool process_send(net_size_t size);
 	void process_close(void);
-protected:
-	bool send_check(net_size_t size);
-	void post_send(bool flag);
 public:
 	bool send(const char* packet, net_size_t size);
 protected:
@@ -99,6 +96,24 @@ protected:
 	message_t m_send_buffer;
 	std::mutex m_send_mutex;
 };
+#define UTILITY_NET_SESSION_SEND_BEGIN(size)					\
+	if (this->m_state != static_cast<int>(net::session_iface::state::connected))	\
+			return false;										\
+	std::lock_guard<std::mutex> lock(this->m_send_mutex);		\
+	if (this->m_send_buffer.writable_size() < size){			\
+		this->close(net::session_iface::reason::cs_send_buffer_overflow);			\
+		return false;											\
+	}
+
+#define UTILITY_NET_SESSION_SEND_END(flag)							\
+	if (flag){														\
+		this->m_send_data.m_buffer.len = this->MAX_MSG_LEN;			\
+		this->m_send_data.m_buffer.buf =							\
+			const_cast<char*>(this->m_send_buffer.read(this->m_send_data.m_buffer.len));\
+		if (this->m_state == static_cast<int>(net::session_iface::state::connected))	\
+			this->m_io_service->post_send_event(&this->m_send_data);\
+	}
+
 #include "net_session.inl"
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }//namespace net

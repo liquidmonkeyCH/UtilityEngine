@@ -36,10 +36,19 @@ public:
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
-#define DECLARE_SINGLETON(singletonId)		\
-protected:									\
-	singletonId(void);						\
-	~singletonId(void);						\
+#define DECLARE_SINGLETON(singletonId)	\
+public:									\
+	const char* GetID(void)				\
+	{									\
+		return (#singletonId);			\
+	}									\
+	static const char* ID(void)			\
+	{									\
+		return (#singletonId);			\
+	}									\
+protected:								\
+	singletonId(void);					\
+	~singletonId(void);					\
 	template<class> friend class Utility::com::iface::Singleton;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }

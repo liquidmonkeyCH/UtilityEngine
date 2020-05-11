@@ -69,7 +69,7 @@ application::Start(int param_num, char* params[])
 void
 application::Run(void)
 {
-	Clog::info("Application starting!");
+	Clog::info("Application start success!");
 	get_controler()->run();
 	OnStop();
 }
